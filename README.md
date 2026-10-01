@@ -81,9 +81,11 @@ docker run --rm --cpus=2 --memory=4g -p 127.0.0.1:8787:8787 tendertripwire:local
 docker compose -f deploy/compose.yaml up --build
 ```
 
-`Dockerfile.local-model` includes the pinned model/runtime at image build time. `Dockerfile` is the smaller app-only image for an external compatible inference server. The first GitHub Actions run built the image and executed the model inside enforced 2-CPU/4-GiB/no-network limits. That run failed the required-Lot-B acceptance check and correctly blocked publication; a revised scoped-goal run must pass before release. No public image has been verified yet.
+`Dockerfile.local-model` includes the pinned model/runtime at image build time. `Dockerfile` is the smaller app-only image for an external compatible inference server. The first GitHub Actions run built the image and executed the model inside enforced 2-CPU/4-GiB/no-network limits. That run failed the required-Lot-B acceptance check and correctly blocked publication. [Revised run 36827123779](https://github.com/RoyalPM/Comp/actions/runs/36827123779) passed all 104 tests, 33 UI assertions and the real A/B acceptance in 134 seconds total, then pushed the image. Public package visibility and anonymous pull remain unverified.
 
-`deploy/aikart-agent.yaml` follows the official draft guide's JSON/file runner contract, resource limits and no-network mode. Its image value is deliberately a placeholder until an owner-approved public image is published and verified. The one-shot runner reads `/aikart/input.json` or `AIKART_INPUT` and writes `/aikart/output.json` as `{format,response}`. It analyzes and requests review; it cannot create a packet because there is no interactive reviewer approval in that run.
+`deploy/aikart-agent.yaml` follows the official draft guide's JSON/file runner contract, resource limits and no-network mode. Its image is pinned to the successfully pushed/tested digest below. Before organizer use, the owner must make the GHCR package public and anonymous pull must be verified. The one-shot runner reads `/aikart/input.json` or `AIKART_INPUT` and writes `/aikart/output.json` as `{format,response}`. It analyzes and requests review; it cannot create a packet because there is no interactive reviewer approval in that run.
+
+Verified pushed image: `ghcr.io/royalpm/tendertripwire-bharat-agentic@sha256:06da9c58f0a42b6e635514af77a83505fb714412ed6b2547f4c9f9934a99664f`. Runtime source commit: `897ed1087658580510b7a06cd14ac4683004f55b`. This proves a successful registry push, not anonymous availability.
 
 The organizer's sandbox is described as upcoming. This template is not proof of submission, registration, listing approval, or organizer execution. Hosted replay and the runnable local application are independent demonstration options.
 

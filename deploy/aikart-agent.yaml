@@ -1,4 +1,5 @@
-# TEMPLATE ONLY: replace the public image reference after the owner publishes and verifies it.
+# Digest built, constrained-test verified and pushed by GitHub Actions run 36827123779.
+# RELEASE GATE: package public visibility and anonymous pull are still pending verification.
 # The official aiKart sandbox guide is a draft and the sandbox is described as upcoming.
 apiVersion: aikart.dev/v1
 kind: AgentManifest
@@ -8,7 +9,7 @@ metadata:
   description: "Synthetic, evidence-linked tender checks with a self-hosted local model and human-gated packet preparation."
 runtime:
   type: docker
-  image: "REPLACE_WITH_VERIFIED_PUBLIC_REGISTRY_IMAGE"
+  image: "ghcr.io/royalpm/tendertripwire-bharat-agentic@sha256:06da9c58f0a42b6e635514af77a83505fb714412ed6b2547f4c9f9934a99664f"
   command: ["bash", "scripts/container-run.sh", "aikart"]
 resources:
   cpu: 2

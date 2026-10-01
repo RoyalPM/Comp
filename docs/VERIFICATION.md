@@ -43,7 +43,15 @@ The baseline acceptance harness explicitly exercises the reviewer approval API a
 
 GitHub Actions run [36826041934](https://github.com/RoyalPM/Comp/actions/runs/36826041934), source `024cc498e3920d5de1de65bbb36c5f645075a6ed`, passed the original 91 source tests, UI harness and pinned-model image build. The model ran inside `--cpus=2 --memory=4g --network=none` and returned completed after 76.3 seconds, 6 model calls and 4 tool calls, but reported only Lot A blocked. It omitted the requested alternative Lot B. The unchanged B-suitable assertion failed; authentication/publication were skipped. This is a real failed acceptance run, not a success or a resource-limit pass for the full task.
 
-The fix adds an explicit user-visible required-lot directive and validates the model's plan against that set. One actual model repair request is allowed; a second mismatch blocks before any tool. Thirteen deterministic mock regressions cover repair, fail-closed omission/broadening, lot order and malformed directives. These regressions do not establish live repair performance. Prefix-free natural-language planning remains goal-sensitive. Revised Docker/live validation is pending; earlier successful recordings and measurements above are preserved without being relabelled as post-fix runs.
+The fix adds an explicit user-visible required-lot directive and validates the model's plan against that set. One actual model repair request is allowed; a second mismatch blocks before any tool. Thirteen deterministic mock regressions cover repair, fail-closed omission/broadening, lot order and malformed directives. These regressions do not establish live repair performance. Prefix-free natural-language planning remains goal-sensitive. The revised Docker/live run below passed; earlier successful recordings and measurements above are preserved without being relabelled as post-fix runs.
+
+## Revised constrained container success
+
+[GitHub Actions run 36827123779](https://github.com/RoyalPM/Comp/actions/runs/36827123779) completed successfully for runtime source `897ed1087658580510b7a06cd14ac4683004f55b`. It passed 104 tests and 33 UI-controller assertions, downloaded and SHA-256 verified the pinned model/runtime, built the image, and executed the real model inside enforced 2 CPUs, 4 GiB and no network. The complete container test took **134 seconds** against a 280-second deadline; model inference was **132.9 seconds**, **7 model calls**, **5 tool calls**. The model plan was A then B with preparation requested. Lot A was blocked; Lot B suitable with review pending. The exact output contract, successful exit and no OOM were asserted. No packet or bid was created.
+
+The explicit-scope normal path was exercised. The corrective model-repair branch was covered by mocks, not triggered in this successful live run. This single new run is not a broad reliability benchmark.
+
+The exact tested image was pushed as `ghcr.io/royalpm/tendertripwire-bharat-agentic@sha256:06da9c58f0a42b6e635514af77a83505fb714412ed6b2547f4c9f9934a99664f`. Package public visibility and anonymous pull remain unverified, so organizer pull access is still a release gate. The full observed result is retained in `evidence/ci-success.json` and the failed first run remains in `evidence/ci-first-run-failure.json`.
 
 ## UI and hosted replay
 
@@ -57,9 +65,9 @@ The fix adds an explicit user-visible required-lot directive and validates the m
 
 - Real Node application and local model launcher verified independently of Docker
 - Actual one-shot runner written/output validated through `AIKART_INPUT` and a workspace-local output override
-- Docker image build succeeded in GitHub Actions; the first constrained model run failed its complete-goal assertion as documented above. Revised container acceptance/publication remains pending
-- Source is published at https://github.com/RoyalPM/Comp; no public container image has yet been verified
-- YAML image remains a deliberate publication placeholder
+- Docker image build, revised constrained container acceptance and registry push succeeded in run 36827123779; the failed first acceptance remains disclosed
+- Source is published at https://github.com/RoyalPM/Comp; container push succeeded, but public visibility and anonymous access remain unverified
+- YAML image is pinned to the tested/pushed digest, with an explicit pending-public-access warning
 - The aiKart sandbox guide is a draft/upcoming service; organizer execution has not been tested
 - Registration, final submission, judge access, deadline and submission-form acceptance require separate owner review
 
