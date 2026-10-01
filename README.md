@@ -4,6 +4,12 @@ An evidence-linked tender-preparation agent for a narrow, clearly synthetic proc
 
 **All documents, suppliers and standards are fictional. No live tender submission, signature, EMD/payment or private financial data is used.**
 
+## Submission presentation
+
+- [Final pitch deck (PDF)](submission/TenderTripwire-Pitch.pdf)
+- [Editable pitch deck (PowerPoint)](submission/TenderTripwire-Pitch.pptx)
+
+
 ## The working loop
 
 1. A local Qwen3-1.7B model interprets the goal as a bounded plan: ordered lots and whether to propose packet preparation. An explicit required-lot directive is validated; an omitted or extra lot gets one model repair attempt, then blocks if still wrong.
