@@ -11,7 +11,7 @@ commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root).decode().str
 files['SOURCE_COMMIT.txt']=(commit+'\n').encode()
 evidence=[
   'artifacts/final-verification.json','artifacts/test-output.txt','artifacts/final-source-hashes.txt',
-  'artifacts/aikart-output.json','artifacts/ci/run-36826041934-failure.json','artifacts/ci/run-36827123779-success.json','artifacts/live/baseline.json','artifacts/live/missing.json',
+  'artifacts/aikart-output.json','artifacts/ci/run-36826041934-failure.json','artifacts/ci/run-36827123779-success.json','artifacts/ci/run-36829529273-anonymous-pull.json','artifacts/live/baseline.json','artifacts/live/missing.json',
   'artifacts/live/conflict.json','artifacts/live/injection.json','artifacts/live/injection-resource-observation.txt',
   'artifacts/live/preparation-packet.zip',
 ]

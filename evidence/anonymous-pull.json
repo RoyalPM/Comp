@@ -1,0 +1,23 @@
+{
+  "run_id": 36829529273,
+  "source_commit": "a7e07348ebd5081ad794db6a9b6899d5ddd0db73",
+  "url": "https://github.com/RoyalPM/Comp/actions/runs/36829529273",
+  "status": "completed",
+  "conclusion": "success",
+  "completed_at": "2026-10-01T07:19:25Z",
+  "verification": {
+    "method": "Full docker pull on a standard GitHub Ubuntu runner with a new empty DOCKER_CONFIG; no registry login or credentials; workflow permissions empty",
+    "image": "ghcr.io/royalpm/tendertripwire-bharat-agentic@sha256:06da9c58f0a42b6e635514af77a83505fb714412ed6b2547f4c9f9934a99664f",
+    "image_id": "sha256:76b32672120da990665a013a84fb64259e9373c3174de5e32779c2df63b5e48a",
+    "image_size_bytes": 4039801766,
+    "platform": "linux/amd64",
+    "public_download": "verified",
+    "registry_digest_match": true
+  },
+  "inference_evidence": {
+    "separate_run": 36827123779,
+    "rerun": false,
+    "constrained_total_seconds": 134
+  },
+  "organizer_execution": "not tested; no competition submission was performed by this check"
+}

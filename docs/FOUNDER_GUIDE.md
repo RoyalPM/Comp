@@ -59,8 +59,8 @@ A per-packet or small-supplier/consultant subscription is a hypothesis to valida
 
 - Confirm registration and the organizer's actual deadline/timezone separately
 - Review repository contents, no credentials/private supplier data/model weights
-- Build and run the Docker image in a real Docker environment before claiming it is verified
-- Replace the YAML image placeholder only with a verified owner-approved public image
+- Docker build and constrained real inference passed in GitHub Actions run 36827123779 (134 seconds, 2 CPUs, 4 GiB, no network)
+- The YAML pins the tested public image digest; anonymous full-image pull passed separately in run 36829529273
 - Review the five-slide deck and 2–3 minute video for truthful mode/timing claims
 - Ensure judges have access to required links; an owner-private replay is not a public judge link
-- Have the owner approve public repository/image/sharing and final form submission
+- Public repository, replay and image sharing were owner-approved; final competition form submission still requires owner review

@@ -212,8 +212,8 @@
       "tag": "sha-897ed1087658580510b7a06cd14ac4683004f55b",
       "digest": "sha256:06da9c58f0a42b6e635514af77a83505fb714412ed6b2547f4c9f9934a99664f",
       "push": "success",
-      "public_visibility": "not verified",
-      "anonymous_pull": "not verified"
+      "public_visibility": "verified by subsequent independent anonymous full-image pull",
+      "anonymous_pull": "success in run 36829529273"
     },
     "previous_failure": {
       "run_id": 36826041934,
@@ -223,5 +223,28 @@
       "format": "markdown",
       "response": "# TenderTripwire \u00b7 synthetic evidence check\n\nLot A is blocked: Tender requires SOLAR-24 / SYN-LIGHT-24-R2; supplied certificate covers SOLAR-18 / SYN-LIGHT-18-R1. Lot B passes the current synthetic preparation checks and awaits human approval. Preparation only; no bid has been submitted.\n\nPlan: {\"lots\":[\"A\",\"B\"],\"preparePacket\":true}.\n\nRun: completed. Mode: live. Model calls: 7. Tool calls: 5. Duration: 132.9 seconds.\n\nNo packet is created in this one-shot runner: a separate explicit human approval is required in the interactive app. All records are synthetic; no bid is submitted.\n\n## Evidence checks\n\n### Lot A: blocked\n- **Product and specification (fail)**: Tender requires SOLAR-24 / SYN-LIGHT-24-R2; supplied certificate covers SOLAR-18 / SYN-LIGHT-18-R1.\n  - lot-a, p1 L3\u20133: Product: SOLAR-24\n  - lot-a, p1 L4\u20134: Required standard: SYN-LIGHT-24-R2\n  - certificate-a, p1 L3\u20133: Product: SOLAR-18\n  - certificate-a, p1 L4\u20134: Certified standard: SYN-LIGHT-18-R1\n- **Certificate holder (pass)**: Certificate holder matches the supplier legal name.\n  - supplier-profile, p1 L2\u20132: Legal name: Suryodaya Learning Supplies\n  - certificate-a, p1 L2\u20132: Certificate holder: Suryodaya Learning Supplies\n  - tender-main, p1 L3\u20133: Clause 1. Supplier legal name must match the product certificate holder.\n- **Certificate validity (pass)**: Valid through the 2026-10-15 closing date.\n  - certificate-a, p1 L5\u20135: Valid until: 2027-03-31\n  - tender-main, p1 L2\u20132: Issuer: Fictional District Learning Centres Programme. Closing date: 2026-10-15.\n  - tender-main, p1 L4\u20134: Clause 2. Each lot requires a matching product certificate valid on the closing date.\n- **Supply capacity (pass)**: 650 units/month stated; 500 units required. Supplier statement, not independently audited.\n  - supplier-profile, p1 L3\u20133: Monthly capacity SOLAR-24: 650\n  - lot-a, p1 L5\u20135: Quantity: 500\n  - tender-main, p1 L5\u20135: Clause 3. Stated monthly capacity must meet the quantity of the selected lot.\n- **Manufacturer authorization (pass)**: Synthetic signed specimen covers this supplier and product.\n  - authorization, p1 L2\u20132: Authorized supplier: Suryodaya Learning Supplies\n  - authorization, p1 L3\u20133: Authorized products: SOLAR-24; STUDY-12\n  - authorization, p1 L4\u20134: Authorization state: signed specimen\n  - authorization, p1 L5\u20135: Valid until: 2027-03-31\n  - tender-main, p1 L6\u20136: Clause 4. A signed manufacturer authorization is required for every lot.\n\n### Lot B: suitable\n- **Product and specification (pass)**: STUDY-12 and SYN-LIGHT-12-R1 match exactly.\n  - lot-b, p1 L3\u20133: Product: STUDY-12\n  - lot-b, p1 L4\u20134: Required standard: SYN-LIGHT-12-R1\n  - certificate-b, p1 L3\u20133: Product: STUDY-12\n  - certificate-b, p1 L4\u20134: Certified standard: SYN-LIGHT-12-R1\n- **Certificate holder (pass)**: Certificate holder matches the supplier legal name.\n  - supplier-profile, p1 L2\u20132: Legal name: Suryodaya Learning Supplies\n  - certificate-b, p1 L2\u20132: Certificate holder: Suryodaya Learning Supplies\n  - tender-main, p1 L3\u20133: Clause 1. Supplier legal name must match the product certificate holder.\n- **Certificate validity (pass)**: Valid through the 2026-10-15 closing date.\n  - certificate-b, p1 L5\u20135: Valid until: 2027-03-31\n  - tender-main, p1 L2\u20132: Issuer: Fictional District Learning Centres Programme. Closing date: 2026-10-15.\n  - tender-main, p1 L4\u20134: Clause 2. Each lot requires a matching product certificate valid on the closing date.\n- **Supply capacity (pass)**: 450 units/month stated; 300 units required. Supplier statement, not independently audited.\n  - supplier-profile, p1 L4\u20134: Monthly capacity STUDY-12: 450\n  - lot-b, p1 L5\u20135: Quantity: 300\n  - tender-main, p1 L5\u20135: Clause 3. Stated monthly capacity must meet the quantity of the selected lot.\n- **Manufacturer authorization (pass)**: Synthetic signed specimen covers this supplier and product.\n  - authorization, p1 L2\u20132: Authorized supplier: Suryodaya Learning Supplies\n  - authorization, p1 L3\u20133: Authorized products: SOLAR-24; STUDY-12\n  - authorization, p1 L4\u20134: Authorization state: signed specimen\n  - authorization, p1 L5\u20135: Valid until: 2027-03-31\n  - tender-main, p1 L6\u20136: Clause 4. A signed manufacturer authorization is required for every lot."
     }
+  },
+  "anonymous_public_pull": {
+    "run_id": 36829529273,
+    "source_commit": "a7e07348ebd5081ad794db6a9b6899d5ddd0db73",
+    "url": "https://github.com/RoyalPM/Comp/actions/runs/36829529273",
+    "status": "completed",
+    "conclusion": "success",
+    "completed_at": "2026-10-01T07:19:25Z",
+    "verification": {
+      "method": "Full docker pull on a standard GitHub Ubuntu runner with a new empty DOCKER_CONFIG; no registry login or credentials; workflow permissions empty",
+      "image": "ghcr.io/royalpm/tendertripwire-bharat-agentic@sha256:06da9c58f0a42b6e635514af77a83505fb714412ed6b2547f4c9f9934a99664f",
+      "image_id": "sha256:76b32672120da990665a013a84fb64259e9373c3174de5e32779c2df63b5e48a",
+      "image_size_bytes": 4039801766,
+      "platform": "linux/amd64",
+      "public_download": "verified",
+      "registry_digest_match": true
+    },
+    "inference_evidence": {
+      "separate_run": 36827123779,
+      "rerun": false,
+      "constrained_total_seconds": 134
+    },
+    "organizer_execution": "not tested; no competition submission was performed by this check"
   }
 }

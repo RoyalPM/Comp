@@ -1,5 +1,5 @@
 # Digest built, constrained-test verified and pushed by GitHub Actions run 36827123779.
-# RELEASE GATE: package public visibility and anonymous pull are still pending verification.
+# Anonymous full-image pull verified without credentials by GitHub Actions run 36829529273.
 # The official aiKart sandbox guide is a draft and the sandbox is described as upcoming.
 apiVersion: aikart.dev/v1
 kind: AgentManifest

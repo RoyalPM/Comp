@@ -26,7 +26,7 @@ for scenario in ['baseline','missing','conflict','injection']:
     'final_packet_status':[{k:p[k] for k in ['id','lot','revision','status','approvalId']} for p in record['state']['packets']],
   }
   (evidence/f'live-{scenario}.json').write_text(json.dumps(clean,indent=2)+'\n')
-for src,name in [('artifacts/final-verification.json','verification-summary.json'),('artifacts/aikart-output.json','aikart-contract-output.json'),('artifacts/test-output.txt','test-results.txt'),('artifacts/live/injection-resource-observation.txt','resource-observation.txt'),('artifacts/ci/run-36826041934-failure.json','ci-first-run-failure.json'),('artifacts/ci/run-36827123779-success.json','ci-success.json')]:
+for src,name in [('artifacts/final-verification.json','verification-summary.json'),('artifacts/aikart-output.json','aikart-contract-output.json'),('artifacts/test-output.txt','test-results.txt'),('artifacts/live/injection-resource-observation.txt','resource-observation.txt'),('artifacts/ci/run-36826041934-failure.json','ci-first-run-failure.json'),('artifacts/ci/run-36827123779-success.json','ci-success.json'),('artifacts/ci/run-36829529273-anonymous-pull.json','anonymous-pull.json')]:
   shutil.copy2(root/src,evidence/name)
 (evidence/'README.md').write_text('# Verification evidence\n\nThese are actual local-model runs over fictional sources. Controller mock tests are labelled separately in the test suite. The compact traces remove repeated UI snapshots, not model/tool events. Automated test-reviewer approval is not a claim that a real supplier or the user approved a live tender. The public Site is a read-only replay. Runtime/model weights, session data, secrets and logs are not included.\n')
 entries=[]

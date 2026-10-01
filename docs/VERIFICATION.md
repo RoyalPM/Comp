@@ -51,7 +51,7 @@ The fix adds an explicit user-visible required-lot directive and validates the m
 
 The explicit-scope normal path was exercised. The corrective model-repair branch was covered by mocks, not triggered in this successful live run. This single new run is not a broad reliability benchmark.
 
-The exact tested image was pushed as `ghcr.io/royalpm/tendertripwire-bharat-agentic@sha256:06da9c58f0a42b6e635514af77a83505fb714412ed6b2547f4c9f9934a99664f`. Package public visibility and anonymous pull remain unverified, so organizer pull access is still a release gate. The full observed result is retained in `evidence/ci-success.json` and the failed first run remains in `evidence/ci-first-run-failure.json`.
+The exact tested image was pushed as `ghcr.io/royalpm/tendertripwire-bharat-agentic@sha256:06da9c58f0a42b6e635514af77a83505fb714412ed6b2547f4c9f9934a99664f`. [Anonymous pull run 36829529273](https://github.com/RoyalPM/Comp/actions/runs/36829529273) subsequently verified public download of that exact digest using a fresh empty Docker config with no registry login or supplied credentials. The full pull completed successfully at 07:19:25 UTC. Returned image ID was `sha256:76b32672120da990665a013a84fb64259e9373c3174de5e32779c2df63b5e48a`; Linux/amd64 and the digest were asserted. Image size was 4,039,801,766 bytes. This download check did not rerun inference. The follow-up evidence is `evidence/anonymous-pull.json`. The full observed result is retained in `evidence/ci-success.json` and the failed first run remains in `evidence/ci-first-run-failure.json`.
 
 ## UI and hosted replay
 
@@ -66,8 +66,8 @@ The exact tested image was pushed as `ghcr.io/royalpm/tendertripwire-bharat-agen
 - Real Node application and local model launcher verified independently of Docker
 - Actual one-shot runner written/output validated through `AIKART_INPUT` and a workspace-local output override
 - Docker image build, revised constrained container acceptance and registry push succeeded in run 36827123779; the failed first acceptance remains disclosed
-- Source is published at https://github.com/RoyalPM/Comp; container push succeeded, but public visibility and anonymous access remain unverified
-- YAML image is pinned to the tested/pushed digest, with an explicit pending-public-access warning
+- Source is published at https://github.com/RoyalPM/Comp; container push and independent anonymous full-image pull both succeeded
+- YAML image is pinned to the constrained-test-verified, anonymously pullable public digest
 - The aiKart sandbox guide is a draft/upcoming service; organizer execution has not been tested
 - Registration, final submission, judge access, deadline and submission-form acceptance require separate owner review
 
