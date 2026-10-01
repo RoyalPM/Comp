@@ -1,0 +1,126 @@
+# Owner-approved public container release. Upload only as the path below in RoyalPM/Comp.
+# Trigger is deliberately limited to changes of this workflow on main.
+name: Build, verify and publish TenderTripwire
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/tendertripwire-container.yml']
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: tendertripwire-container-release
+  cancel-in-progress: false
+
+jobs:
+  verify-and-publish:
+    if: github.repository == 'RoyalPM/Comp' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      RELEASE_TAG: sha-${{ github.sha }}
+      IMAGE: ghcr.io/royalpm/tendertripwire-bharat-agentic
+    steps:
+      - name: Check out the exact public repository commit without a stored token
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$RELEASE_TAG" =~ ^[a-z0-9][a-z0-9._-]{0,63}$ ]] || { echo 'Invalid release tag'; exit 1; }
+          git init .
+          git remote add origin "https://github.com/${GITHUB_REPOSITORY}.git"
+          git fetch --depth=1 origin "$GITHUB_SHA"
+          git checkout --detach FETCH_HEAD
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+
+      - name: Run source tests in the official Node 24 environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm -v "$PWD:/app" -w /app node:24-bookworm bash -lc '
+            set -euo pipefail
+            command -v python3 >/dev/null || { apt-get update -qq; apt-get install -y --no-install-recommends python3; }
+            npm run check
+            npm test
+            node scripts/verify-ui-harness.js
+            bash -n scripts/setup-local-model.sh scripts/container-run.sh
+          '
+
+      - name: Build the pinned-model CPU image
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker build --pull --file Dockerfile.local-model \
+            --label "org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}" \
+            --label "org.opencontainers.image.revision=${GITHUB_SHA}" \
+            --label 'org.opencontainers.image.description=Synthetic tender preparation agent; Qwen model and llama.cpp notices included' \
+            --tag "$IMAGE:$RELEASE_TAG" .
+
+      - name: Exercise the real model under 2 CPUs, 4 GiB, no network and a 280-second deadline
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release-evidence
+          START=$(date +%s)
+          timeout --signal=TERM --kill-after=10s 280s docker run \
+            --name tendertripwire-contract-check \
+            --cpus=2 --memory=4g --network=none \
+            -e 'AIKART_INPUT={"scenario":"baseline","goal":"Check Lot A. If its certificate does not satisfy the tender, investigate and evaluate Lot B as an alternative. Request preparation review only if every check passes."}' \
+            "$IMAGE:$RELEASE_TAG" bash scripts/container-run.sh aikart \
+            > release-evidence/runner-stdout.txt
+          ELAPSED=$(( $(date +%s) - START ))
+          docker cp tendertripwire-contract-check:/aikart/output.json release-evidence/output.json
+          docker inspect tendertripwire-contract-check > release-evidence/container-inspect.json
+          python3 - "$ELAPSED" <<'PY'
+          import json,sys
+          from pathlib import Path
+          elapsed=int(sys.argv[1])
+          output=json.loads(Path('release-evidence/output.json').read_text())
+          info=json.loads(Path('release-evidence/container-inspect.json').read_text())[0]
+          assert set(output)=={'format','response'}
+          assert output['format']=='markdown'
+          assert 'Run: completed.' in output['response']
+          assert 'Lot A: blocked' in output['response']
+          assert 'Lot B: suitable' in output['response']
+          assert info['State']['ExitCode']==0 and not info['State']['OOMKilled']
+          assert info['HostConfig']['Memory']==4*1024**3
+          assert info['HostConfig']['NanoCpus']==2_000_000_000
+          assert info['HostConfig']['NetworkMode']=='none'
+          assert elapsed<=280
+          print('Verified real local inference and exact output contract within enforced container limits:',elapsed,'seconds')
+          PY
+          cat release-evidence/output.json
+
+      - name: Authenticate for the owner-approved package publication
+        shell: bash
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+
+      - name: Publish the exact tested image
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker push "$IMAGE:$RELEASE_TAG"
+          docker image inspect "$IMAGE:$RELEASE_TAG" --format '{{json .RepoDigests}}' | tee release-evidence/repo-digests.json
+          {
+            printf '### Verified container publication\n\n'
+            printf 'Source commit: `%s`\n\n' "$GITHUB_SHA"
+            printf 'Image: `%s:%s`\n\n' "$IMAGE" "$RELEASE_TAG"
+            printf 'Registry digests: '
+            cat release-evidence/repo-digests.json
+            printf '\n\nSource tests and constrained real-model contract passed. Public visibility and an anonymous pull still require separate verification.\n'
+          } >> "$GITHUB_STEP_SUMMARY"
+          printf 'Image pushed. This does NOT prove public anonymous access. Verify package visibility and anonymous pull before using the manifest.\n' 
+
+      - name: Clean up test container and registry session
+        if: always()
+        shell: bash
+        run: |
+          docker logs tendertripwire-contract-check 2>/dev/null || true
+          docker rm -f tendertripwire-contract-check 2>/dev/null || true
+          docker logout ghcr.io >/dev/null 2>&1 || true
