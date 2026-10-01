@@ -109,19 +109,40 @@ export async function chooseAction(config, goal, state, history = [], fetchImpl 
   } finally { clearTimeout(timer); }
 }
 
-async function planGoal(config, goal, fetchImpl) {
-  const schema = { type: 'object', properties: { lots: { type: 'array', items: { type: 'string', enum: ['A', 'B'] }, minItems: 1, maxItems: 2 }, preparePacket: { type: 'boolean' } }, required: ['lots', 'preparePacket'], additionalProperties: false };
-  const response = await fetchImpl(`${config.baseURL.replace(/\/$/, '')}/chat/completions`, { method: 'POST', signal: AbortSignal.timeout(60000), headers: { 'Content-Type': 'application/json', ...(config.apiKey ? { Authorization: `Bearer ${config.apiKey}` } : {}) }, body: JSON.stringify({ model: config.model, temperature: 0.1, max_tokens: 100, reasoning_effort: 'none', response_format: { type: 'json_object', schema }, messages: [{ role: 'system', content: 'Convert the user goal into a bounded preparation plan. Return JSON {"lots":["A","B"],"preparePacket":true}. Include only requested lots. A request to compare, investigate alternatives, or find a suitable lot requires both A and B. A request only to recheck Lot B requires B alone. preparePacket is true when asked to prepare a packet or request preparation approval; false for analysis only. This does not approve any action. /no_think' }, { role: 'user', content: goal }] }) });
-  if (!response.ok) throw new TripwireError('MODEL_HTTP_ERROR', `Planning inference returned HTTP ${response.status}.`, 502);
-  const data = await response.json(); let plan;
-  try { plan = JSON.parse(data.choices[0].message.content); } catch { throw new TripwireError('MODEL_INVALID_PLAN', 'The model did not return a valid bounded plan.', 502); }
-  if (!plan || typeof plan !== 'object' || Array.isArray(plan) || Object.keys(plan).some(key => !['lots', 'preparePacket'].includes(key)) || !Array.isArray(plan.lots) || !plan.lots.length || plan.lots.length > 2 || plan.lots.some(lot => !['A', 'B'].includes(lot)) || typeof plan.preparePacket !== 'boolean') throw new TripwireError('MODEL_INVALID_PLAN', 'The model plan failed schema validation.', 502);
-  return { lots: [...new Set(plan.lots)], preparePacket: plan.preparePacket };
+function explicitLotScope(goal) {
+  const firstLine = goal.trim().split(/\r?\n/, 1)[0];
+  if (!/^Required lots\b/i.test(firstLine)) return null;
+  const match = firstLine.match(/^Required lots:\s*([AB](?:\s*,\s*[AB])?)\.\s*$/i);
+  const lots = match?.[1].toUpperCase().split(/\s*,\s*/);
+  if (!lots || new Set(lots).size !== lots.length) throw new TripwireError('INVALID_GOAL_SCOPE', 'Use a separate first line: Required lots: A, B. (or A. or B.). Each lot may appear once.', 400);
+  return lots;
+}
+
+async function planGoal(config, goal, fetchImpl, requiredLots, onRequest, onScopeRejected) {
+  const schema = { type: 'object', properties: { lots: { type: 'array', items: { type: 'string', enum: requiredLots || ['A', 'B'] }, minItems: requiredLots?.length || 1, maxItems: requiredLots?.length || 2 }, preparePacket: { type: 'boolean' } }, required: ['lots', 'preparePacket'], additionalProperties: false };
+  const messages = [{ role: 'system', content: 'Convert the user goal into a bounded preparation plan. Return JSON {"lots":["A","B"],"preparePacket":true}. Include only requested lots. A request to compare, investigate alternatives, or find a suitable lot requires both A and B. A request only to recheck Lot B requires B alone. preparePacket is true when asked to prepare a packet or request preparation approval; false for analysis only. This does not approve any action.' + (requiredLots ? ` The user explicitly requires exactly these lots: ${requiredLots.join(', ')}. Include each exactly once; choose their order. Do not omit a required lot because another is blocked.` : '') + ' /no_think' }, { role: 'user', content: goal }];
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    await onRequest({ attempt, requiredLots });
+    const response = await fetchImpl(`${config.baseURL.replace(/\/$/, '')}/chat/completions`, { method: 'POST', signal: AbortSignal.timeout(60000), headers: { 'Content-Type': 'application/json', ...(config.apiKey ? { Authorization: `Bearer ${config.apiKey}` } : {}) }, body: JSON.stringify({ model: config.model, temperature: 0.1, max_tokens: 100, reasoning_effort: 'none', response_format: { type: 'json_object', schema }, messages }) });
+    if (!response.ok) throw new TripwireError('MODEL_HTTP_ERROR', `Planning inference returned HTTP ${response.status}.`, 502);
+    const data = await response.json(); let plan;
+    const content = data.choices?.[0]?.message?.content;
+    try { plan = JSON.parse(content); } catch { throw new TripwireError('MODEL_INVALID_PLAN', 'The model did not return a valid bounded plan.', 502); }
+    if (!plan || typeof plan !== 'object' || Array.isArray(plan) || Object.keys(plan).some(key => !['lots', 'preparePacket'].includes(key)) || !Array.isArray(plan.lots) || !plan.lots.length || plan.lots.length > 2 || plan.lots.some(lot => !['A', 'B'].includes(lot)) || typeof plan.preparePacket !== 'boolean') throw new TripwireError('MODEL_INVALID_PLAN', 'The model plan failed schema validation.', 502);
+    if (requiredLots && (plan.lots.length !== requiredLots.length || new Set(plan.lots).size !== plan.lots.length || requiredLots.some(lot => !plan.lots.includes(lot)))) {
+      await onScopeRejected({ attempt, requiredLots, proposedPlan: plan });
+      if (attempt === 2) throw new TripwireError('MODEL_PLAN_SCOPE_MISMATCH', 'The model twice omitted or broadened the explicitly required lot scope. No tools or inferred completion were allowed.', 502);
+      messages.push({ role: 'assistant', content }, { role: 'user', content: `Your plan failed scope validation. The explicit user scope is exactly ${requiredLots.join(', ')}. Return a corrected plan containing each required lot once and no other lot. Choose the order and preparation intent from the goal. No tool has run.` });
+      continue;
+    }
+    return { lots: [...new Set(plan.lots)], preparePacket: plan.preparePacket };
+  }
 }
 
 export async function runController({ store, session, goal, mode = 'live', config = {}, fetchImpl = fetch }) {
   if (!['live', 'fixture'].includes(mode)) throw new TripwireError('INVALID_MODE', 'Choose live inference or the labelled fixture walkthrough.', 400);
   if (typeof goal !== 'string' || !goal.trim() || goal.length > 3000) throw new TripwireError('INVALID_GOAL', 'Enter a goal between 1 and 3000 characters.', 400);
+  const requiredLots = explicitLotScope(goal);
   const runId = crypto.randomUUID(), started = Date.now();
   const run = { id: runId, mode, goal, startedAt: new Date().toISOString(), status: 'running', model: mode === 'live' ? config.model : null, provider: mode === 'live' ? runtimeInfo(config).provider : 'Deterministic fixture', modelCalls: 0, toolCalls: 0, summary: '' };
   await store.mutate(session, state => {
@@ -141,8 +162,11 @@ export async function runController({ store, session, goal, mode = 'live', confi
       run.summary = state.evaluations.B?.status === 'suitable' ? 'Deterministic walkthrough: Lot A has a product/specification mismatch. Lot B passes the synthetic checks and awaits human approval.' : 'Deterministic walkthrough: Lot A is blocked. Lot B has unresolved evidence; no preparation approval is allowed.';
     } else {
       let plan = null;
-      if (config.local) {
-        plan = await planGoal(config, goal, fetchImpl); run.modelCalls++; run.plan = plan;
+      if (config.local || requiredLots) {
+        plan = await planGoal(config, goal, fetchImpl, requiredLots,
+          async details => { run.modelCalls++; await store.mutate(session, state => { audit(state, 'model', 'plan_goal_request', { runId, ...details }, { status: 'requested' }); Object.assign(state.runs.find(r => r.id === runId), run); }); },
+          async details => { await store.mutate(session, state => audit(state, 'system', 'plan_scope_rejected', { runId }, details)); });
+        run.plan = plan;
         await store.mutate(session, state => { audit(state, 'model', 'plan_goal', { goal }, plan); Object.assign(state.runs.find(r => r.id === runId), run); });
       }
       let finished = false;

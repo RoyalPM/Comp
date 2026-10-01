@@ -67,7 +67,7 @@ jobs:
           timeout --signal=TERM --kill-after=10s 280s docker run \
             --name tendertripwire-contract-check \
             --cpus=2 --memory=4g --network=none \
-            -e 'AIKART_INPUT={"scenario":"baseline","goal":"Check Lot A. If its certificate does not satisfy the tender, investigate and evaluate Lot B as an alternative. Request preparation review only if every check passes."}' \
+            -e 'AIKART_INPUT={"scenario":"baseline","goal":"Required lots: A, B.\nCompare Lot A and Lot B. Request approval for a preparation packet only for a lot that passes every evidence check."}' \
             "$IMAGE:$RELEASE_TAG" bash scripts/container-run.sh aikart \
             > release-evidence/runner-stdout.txt
           ELAPSED=$(( $(date +%s) - START ))
@@ -81,9 +81,9 @@ jobs:
           info=json.loads(Path('release-evidence/container-inspect.json').read_text())[0]
           assert set(output)=={'format','response'}
           assert output['format']=='markdown'
-          assert 'Run: completed.' in output['response']
-          assert 'Lot A: blocked' in output['response']
-          assert 'Lot B: suitable' in output['response']
+          assert 'Run: completed.' in output['response'], output['response']
+          assert 'Lot A: blocked' in output['response'], output['response']
+          assert 'Lot B: suitable' in output['response'], output['response']
           assert info['State']['ExitCode']==0 and not info['State']['OOMKilled']
           assert info['HostConfig']['Memory']==4*1024**3
           assert info['HostConfig']['NanoCpus']==2_000_000_000

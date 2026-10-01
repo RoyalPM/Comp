@@ -164,5 +164,11 @@
   "model_resource_observation": "VmHWM:\t 2931608 kB\nVmRSS:\t 2931608 kB\nCpus_allowed_list:\t0-1\n",
   "docker_executed": false,
   "public_repository_published": false,
-  "public_image_published": false
+  "public_image_published": false,
+  "scope_repair": {
+    "source_checks": "104 tests and 33 UI-controller assertions pass",
+    "live_validation": "pending revised GitHub Actions run",
+    "first_ci_run_failure": "https://github.com/RoyalPM/Comp/actions/runs/36826041934",
+    "historical_live_results": "The recorded runs in results predate the explicit required-lot repair and are retained as historical evidence."
+  }
 }

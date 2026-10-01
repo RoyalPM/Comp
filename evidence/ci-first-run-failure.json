@@ -1,0 +1,19 @@
+{
+  "run_id": 36826041934,
+  "commit": "024cc498e3920d5de1de65bbb36c5f645075a6ed",
+  "url": "https://github.com/RoyalPM/Comp/actions/runs/36826041934",
+  "result": "failed",
+  "source_tests": "passed",
+  "docker_build": "passed",
+  "constrained_runner": "actual live model completed but goal incomplete",
+  "model_duration_seconds": 76.3,
+  "model_calls": 6,
+  "tool_calls": 4,
+  "observed_lots": {
+    "A": "blocked"
+  },
+  "missing_required_lot": "B",
+  "publication": "skipped",
+  "diagnosis": "The returned one-shot output omitted Lot B despite the conditional alternative request. A bounded planner scope omission is inferred; its plan was not included in the one-shot output. The assertion correctly rejected this run.",
+  "retry_change": "Use exactly the full goal from the previously successful baseline acceptance run; retain both lot assertions and all resource constraints. This is a narrow repeatable demo input, not a claim of robust arbitrary-goal understanding."
+}

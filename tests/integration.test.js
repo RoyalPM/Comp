@@ -577,3 +577,122 @@ test('controller local-plan mock: a hidden approval tool cannot override analysi
   assert.equal(state.proposal, null, 'A model reply cannot create an out-of-plan approval proposal');
   assert.equal(state.approval, null);
 });
+
+// Explicit-scope cases are mock protocol regressions, not live-model quality
+// or performance evidence. The controller must never silently shrink or widen
+// a user-declared required set; model-selected ordering remains independent.
+test('controller lot-scope mock: omitted B receives one planning repair before any tools execute', async t => {
+  const fixedPlan = { lots: ['A', 'B'], preparePacket: true };
+  const { run, state, requests } = await localPlanMock(t, { lots: ['A'], preparePacket: true }, [
+    fixedPlan, action('evaluate_lot', { lot: 'A' }), action('evaluate_lot', { lot: 'B' }),
+    action('request_packet_approval', { lot: 'B' }), mockFinish(),
+  ], { goal: 'Required lots: A, B.\nCheck Lot A first and if blocked investigate Lot B; request preparation approval for a suitable lot.' });
+  assert.equal(run.status, 'completed');
+  assert.deepEqual(run.plan, fixedPlan);
+  assert.equal(requests.length, 6);
+  assert.equal(run.modelCalls, requests.length);
+  assert.equal(run.toolCalls, 3);
+  const events = state.audit.map(event => event.tool);
+  assert.equal(events.filter(tool => tool === 'plan_goal_request').length, 2);
+  assert.equal(events.filter(tool => tool === 'plan_scope_rejected').length, 1);
+  assert.equal(events.filter(tool => tool === 'plan_goal').length, 1);
+  assert.deepEqual(state.audit.filter(event => event.tool === 'plan_goal_request').map(event => event.args.attempt), [1, 2]);
+  assert.deepEqual(state.audit.find(event => event.tool === 'plan_scope_rejected').result, {
+    attempt: 1, requiredLots: ['A', 'B'], proposedPlan: { lots: ['A'], preparePacket: true },
+  });
+  assert.deepEqual(JSON.parse(requests[1].body.messages.find(message => message.role === 'assistant').content), { lots: ['A'], preparePacket: true });
+  assert.match(requests[1].body.messages.at(-1).content, /scope.*exactly A, B/i);
+  assert.match(requests[1].body.messages.at(-1).content, /No tool has run/);
+  assert.ok(events.indexOf('plan_scope_rejected') < events.indexOf('plan_goal'));
+  assert.ok(events.indexOf('plan_goal') < events.indexOf('evaluate_lot'));
+  assert.deepEqual(state.audit.filter(event => event.tool === 'evaluate_lot').map(event => event.args.lot), ['A', 'B']);
+  assert.equal(state.evaluations.A.status, 'blocked');
+  assert.equal(state.evaluations.B.status, 'suitable');
+  assert.equal(state.proposal.lot, 'B');
+  assert.equal(state.proposal.status, 'pending');
+  assert.equal(state.approval, null);
+  assert.equal(state.packets.length, 0);
+});
+
+test('controller lot-scope mock: a second omitted-B plan blocks before any tool execution', async t => {
+  const wrongPlan = { lots: ['A'], preparePacket: true };
+  const { run, state, requests } = await localPlanMock(t, wrongPlan, [wrongPlan], {
+    goal: 'Required lots: A, B.\nInspect A and, if blocked, find a suitable alternative in B.'
+  });
+  assert.equal(run.status, 'blocked');
+  assert.equal(run.error.code, 'MODEL_PLAN_SCOPE_MISMATCH');
+  assert.equal(requests.length, 2, 'Exactly one repair is permitted');
+  assert.equal(run.modelCalls, 2);
+  assert.equal(run.toolCalls, 0);
+  assert.equal(state.audit.filter(event => event.tool === 'plan_goal_request').length, 2);
+  assert.equal(state.audit.filter(event => event.tool === 'plan_scope_rejected').length, 2);
+  assert.deepEqual(state.audit.filter(event => event.tool === 'plan_scope_rejected').map(event => event.result.attempt), [1, 2]);
+  assert.equal(state.audit.filter(event => event.tool === 'plan_goal').length, 0);
+  assert.deepEqual(state.evaluations, {});
+  assert.equal(state.proposal, null);
+  assert.equal(state.approval, null);
+  assert.equal(state.packets.length, 0);
+});
+
+test('controller lot-scope mock: B-only directive rejects broadened A/B then accepts repaired B', async t => {
+  const fixedPlan = { lots: ['B'], preparePacket: false };
+  const { run, state, requests } = await localPlanMock(t, { lots: ['A', 'B'], preparePacket: false }, [
+    fixedPlan, action('evaluate_lot', { lot: 'B' }), mockFinish(),
+  ], { goal: 'Required lots: B.\nRecheck Lot B only, for analysis without packet preparation.' });
+  assert.equal(run.status, 'completed');
+  assert.deepEqual(run.plan, fixedPlan);
+  assert.equal(run.modelCalls, 4);
+  assert.equal(requests.length, 4);
+  assert.equal(run.toolCalls, 1);
+  assert.equal(state.audit.filter(event => event.tool === 'plan_goal_request').length, 2);
+  assert.equal(state.audit.filter(event => event.tool === 'plan_scope_rejected').length, 1);
+  assert.equal(state.audit.filter(event => event.tool === 'plan_goal').length, 1);
+  assert.equal(state.evaluations.A, undefined);
+  assert.equal(state.evaluations.B.status, 'suitable');
+  assert.deepEqual(branch(requests[2], 'evaluate_lot').properties.arguments.properties.lot.enum, ['B']);
+  assert.equal(state.proposal, null);
+});
+
+for (const [directive, plannedOrder] of [
+  ['A', ['A']], ['B', ['B']], ['A, B', ['B', 'A']], ['B, A', ['A', 'B']],
+]) test(`controller lot-scope mock: valid directive ${directive} permits exact-set model order ${plannedOrder.join(', ')}`, async t => {
+  const plan = { lots: plannedOrder, preparePacket: false };
+  const { run, state, requests } = await localPlanMock(t, plan, [
+    ...plannedOrder.map(lot => action('evaluate_lot', { lot })), mockFinish(),
+  ], { goal: `Required lots: ${directive}.\nAnalyze the declared lots only without preparing a packet.` });
+  assert.equal(run.status, 'completed');
+  assert.deepEqual(run.plan, plan);
+  assert.equal(run.modelCalls, plannedOrder.length + 2);
+  assert.equal(requests.length, run.modelCalls);
+  assert.equal(state.audit.filter(event => event.tool === 'plan_goal_request').length, 1);
+  assert.equal(state.audit.filter(event => event.tool === 'plan_scope_rejected').length, 0);
+  assert.deepEqual(state.audit.filter(event => event.tool === 'evaluate_lot').map(event => event.args.lot), plannedOrder);
+  assert.deepEqual(branch(requests[1], 'evaluate_lot').properties.arguments.properties.lot.enum, [plannedOrder[0]]);
+  assert.equal(state.proposal, null);
+});
+
+for (const malformed of [
+  'Required lots: C.', 'Required lots: A, A.', 'Required lots: .',
+  'Required lots: A,, B.', 'Required lots: A; B.', 'Required lots A, B.',
+]) test(`controller lot-scope mock: malformed directive ${malformed} rejects before inference`, async t => {
+  const { store } = await fixture(t);
+  const state = await createState();
+  await store.put(state);
+  let calls = 0, run, error;
+  const fetchImpl = async () => {
+    calls += 1;
+    throw new Error('Malformed scope must fail before model inference');
+  };
+  try {
+    run = await runController({ store, session: state.id, goal: `${malformed}\nAnalyze the tender.`, mode: 'live', config: { ...MOCK_CONFIG, local: true }, fetchImpl });
+  } catch (caught) { error = caught; }
+  assert.equal(error?.code ?? run?.error?.code, 'INVALID_GOAL_SCOPE');
+  assert.equal(calls, 0);
+  const persisted = await store.get(state.id);
+  assert.equal(persisted.runs.length, 0, 'Malformed scope must reject before a run is started');
+  assert.equal(persisted.audit.filter(event => event.tool === 'plan_goal_request').length, 0);
+  assert.ok(persisted.runs.every(item => item.modelCalls === 0 && item.toolCalls === 0));
+  assert.deepEqual(persisted.evaluations, {});
+  assert.equal(persisted.proposal, null);
+  assert.equal(persisted.approval, null);
+});

@@ -6,7 +6,7 @@ An evidence-linked tender-preparation agent for a narrow, clearly synthetic proc
 
 ## The working loop
 
-1. A local Qwen3-1.7B model interprets the goal as a bounded plan: ordered lots and whether to propose packet preparation.
+1. A local Qwen3-1.7B model interprets the goal as a bounded plan: ordered lots and whether to propose packet preparation. An explicit required-lot directive is validated; an omitted or extra lot gets one model repair attempt, then blocks if still wrong.
 2. It selects constrained document-discovery, source-reading, search and evaluation tools. Tool names, document IDs and lot enums are validated.
 3. Deterministic tools check exact product/standard/holder/date/capacity/authorization evidence and emit document/page/line/quote/hash citations. Missing or conflicting evidence cannot pass.
 4. A suitable result can produce a revision-bound proposal. The model has **no approval tool**.
@@ -38,6 +38,19 @@ node src/server.js
 
 A compatible remote API can be configured with `MODEL_API_KEY`; that is optional, may incur provider charges, and was not used for the verified demonstration. Never put keys in the browser, repository, public image, YAML manifest or screenshot.
 
+### Supported goal scope
+
+Use an explicit first line to bind the required lot set. The default UI, live acceptance script, container check and manifest use:
+
+```text
+Required lots: A, B.
+Compare Lot A and Lot B. Request approval for a preparation packet only for a lot that passes every evidence check.
+```
+
+For a single-lot recheck use `Required lots: B.` on its own first line. A or B alone, or both once, are supported. The model still chooses the lot order, preparation intent and evidence/tool actions. Its proposed lot set is validated, gets one real corrective inference request if wrong, and otherwise stops before tools. The software never inserts a fabricated successful plan.
+
+Prefix-free free-form goals remain experimental and can omit intended work. An actual CI run over conditional alternative wording completed only Lot A; its required Lot B assertion failed and publication was blocked. The explicit scope contract addresses that specific omission; it does not establish broad natural-language reliability. Historical replay/model measurements predate this scope repair and remain labelled as those recorded runs.
+
 ### Deterministic fixture mode
 
 ```sh
@@ -68,7 +81,7 @@ docker run --rm --cpus=2 --memory=4g -p 127.0.0.1:8787:8787 tendertripwire:local
 docker compose -f deploy/compose.yaml up --build
 ```
 
-`Dockerfile.local-model` includes the pinned model/runtime at image build time. `Dockerfile` is the smaller app-only image for an external compatible inference server. No Docker daemon was available in the build environment, so image build/run must be verified before publication. No public image has been published.
+`Dockerfile.local-model` includes the pinned model/runtime at image build time. `Dockerfile` is the smaller app-only image for an external compatible inference server. The first GitHub Actions run built the image and executed the model inside enforced 2-CPU/4-GiB/no-network limits. That run failed the required-Lot-B acceptance check and correctly blocked publication; a revised scoped-goal run must pass before release. No public image has been verified yet.
 
 `deploy/aikart-agent.yaml` follows the official draft guide's JSON/file runner contract, resource limits and no-network mode. Its image value is deliberately a placeholder until an owner-approved public image is published and verified. The one-shot runner reads `/aikart/input.json` or `AIKART_INPUT` and writes `/aikart/output.json` as `{format,response}`. It analyzes and requests review; it cannot create a packet because there is no interactive reviewer approval in that run.
 

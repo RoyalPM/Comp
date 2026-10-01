@@ -15,7 +15,7 @@
 
 ## Model versus deterministic authority
 
-The model chooses which lot(s) the goal asks to assess, whether packet preparation is requested, and which permitted evidence/tool action to take next. A state machine narrows choices based on the model's ordered plan, completed actions, known document IDs and exhausted retrieval budgets. It does not manufacture model responses or replace failed inference with fixtures.
+The default goal contains an explicit `Required lots: A, B.` first line. That user-visible directive binds the required lot set, while the model chooses the order, preparation intent and permitted evidence/tool actions. A model plan that omits or broadens explicit scope receives one corrective model request; a second mismatch stops before tools. Every planning request and rejected scope is audited. Prefix-free lot selection remains experimental and model-interpreted. A state machine narrows choices based on the model's ordered plan, completed actions, known document IDs and exhausted retrieval budgets. It does not manufacture model responses or replace failed inference with fixtures.
 
 The model cannot assert a passed check, invent a source, grant approval, generate an arbitrary file, run a shell, contact a supplier, submit a tender or pay. Evaluations are computed from bounded synthetic document fields. Unknown data, conflicting authoritative fields and invalid dates produce a non-suitable state. The displayed completion summary is derived from verified state; unverified model prose cannot say a failed lot is ready or a bid was submitted.
 

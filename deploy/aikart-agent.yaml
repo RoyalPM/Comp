@@ -19,7 +19,7 @@ inputs:
     label: "Preparation goal (synthetic documents only)"
     type: textarea
     required: true
-    default: "Check Lot A, investigate Lot B if needed, and request human review only when evidence supports preparation."
+    default: "Required lots: A, B.\nCompare Lot A and Lot B. Request approval for a preparation packet only for a lot that passes every evidence check."
   - name: scenario
     label: "Synthetic evidence scenario"
     type: select

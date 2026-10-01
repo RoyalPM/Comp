@@ -4,10 +4,10 @@ Build date: 1 October 2026. All evaluated supplier/tender data is synthetic.
 
 ## Automated correctness and security checks
 
-`npm test`: **91/91 passing** on Node.js 24.
+`npm test`: **104/104 passing** on Node.js 24.
 
 - 49 core adversarial assertions/tests
-- 42 API, actual filesystem/ZIP and explicitly mocked controller tests
+- 55 API, actual filesystem/ZIP and explicitly mocked controller tests (including 13 explicit-scope regressions)
 - Syntax checks for core, server, controller, worker, aiKart runner and browser JavaScript passed
 - Shell launcher scripts pass `bash -n`
 - Python's `zipfile` verified CRC and contents of the actual API-generated preparation ZIP
@@ -39,6 +39,12 @@ The final exposed-injection run used CPU affinity **0–1** and two model genera
 
 The baseline acceptance harness explicitly exercises the reviewer approval API as a test actor. The model itself never receives an approval tool. The generated package and later HTTP/state revocation are real; the reviewer action is automated test input, not a claim that the end user personally reviewed a real tender.
 
+## First container acceptance failure and scope repair
+
+GitHub Actions run [36826041934](https://github.com/RoyalPM/Comp/actions/runs/36826041934), source `024cc498e3920d5de1de65bbb36c5f645075a6ed`, passed the original 91 source tests, UI harness and pinned-model image build. The model ran inside `--cpus=2 --memory=4g --network=none` and returned completed after 76.3 seconds, 6 model calls and 4 tool calls, but reported only Lot A blocked. It omitted the requested alternative Lot B. The unchanged B-suitable assertion failed; authentication/publication were skipped. This is a real failed acceptance run, not a success or a resource-limit pass for the full task.
+
+The fix adds an explicit user-visible required-lot directive and validates the model's plan against that set. One actual model repair request is allowed; a second mismatch blocks before any tool. Thirteen deterministic mock regressions cover repair, fail-closed omission/broadening, lot order and malformed directives. These regressions do not establish live repair performance. Prefix-free natural-language planning remains goal-sensitive. Revised Docker/live validation is pending; earlier successful recordings and measurements above are preserved without being relabelled as post-fix runs.
+
 ## UI and hosted replay
 
 - Product source passed a 33-assertion presentation-controller harness against the real backend
@@ -51,8 +57,8 @@ The baseline acceptance harness explicitly exercises the reviewer approval API a
 
 - Real Node application and local model launcher verified independently of Docker
 - Actual one-shot runner written/output validated through `AIKART_INPUT` and a workspace-local output override
-- Dockerfiles/Compose/manifest prepared, but **Docker image build/run not executed** because no Docker daemon exists in the build environment
-- Public container image and GitHub repository have not been published by this build task
+- Docker image build succeeded in GitHub Actions; the first constrained model run failed its complete-goal assertion as documented above. Revised container acceptance/publication remains pending
+- Source is published at https://github.com/RoyalPM/Comp; no public container image has yet been verified
 - YAML image remains a deliberate publication placeholder
 - The aiKart sandbox guide is a draft/upcoming service; organizer execution has not been tested
 - Registration, final submission, judge access, deadline and submission-form acceptance require separate owner review
