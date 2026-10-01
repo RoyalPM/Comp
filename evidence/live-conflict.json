@@ -1,0 +1,1536 @@
+{
+  "synthetic": true,
+  "result": {
+    "scenario": "conflict",
+    "passed": true,
+    "run": {
+      "id": "76335794-5312-4edb-9e2e-85226568f5b6",
+      "mode": "live",
+      "goal": "Check Lot A. If its certificate does not satisfy the tender, investigate and evaluate Lot B as an alternative. Request approval for a preparation packet only if that alternative passes all evidence checks.",
+      "startedAt": "2026-10-01T05:58:00.174Z",
+      "status": "completed",
+      "model": "tendertripwire-1.7b",
+      "provider": "Local open-weight model",
+      "modelCalls": 7,
+      "toolCalls": 5,
+      "summary": "Lot A is blocked: Tender requires SOLAR-24 / SYN-LIGHT-24-R2; supplied certificate covers SOLAR-18 / SYN-LIGHT-18-R1. Lot B needs evidence: Certificate records or fields disagree. Obtain authoritative clarification. A single authoritative certificate is required. Certificate validity or tender closing date is missing or ambiguous. Preparation only; no bid has been submitted.",
+      "plan": {
+        "lots": [
+          "A",
+          "B"
+        ],
+        "preparePacket": true
+      },
+      "durationMs": 83958,
+      "finishedAt": "2026-10-01T05:59:24.132Z"
+    },
+    "statuses": {
+      "A": "blocked",
+      "B": "needs_evidence"
+    },
+    "proposalStatus": null
+  },
+  "provenance": {
+    "mode": "real_local_model",
+    "model": "tendertripwire-1.7b",
+    "endpoint": "http://127.0.0.1:8083/v1",
+    "synthetic": true,
+    "testApproval": "Automated acceptance test explicitly exercised the human approval boundary. The model never has an approve tool."
+  },
+  "inference_request_integrity": [],
+  "source_documents": [
+    {
+      "id": "tender-main",
+      "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+      "role": "tender",
+      "version": 1,
+      "pages": [
+        {
+          "number": 1,
+          "lines": [
+            "SYNTHETIC TENDER \u2014 created solely for a software demonstration.",
+            "Issuer: Fictional District Learning Centres Programme. Closing date: 2026-10-15.",
+            "Clause 1. Supplier legal name must match the product certificate holder.",
+            "Clause 2. Each lot requires a matching product certificate valid on the closing date.",
+            "Clause 3. Stated monthly capacity must meet the quantity of the selected lot.",
+            "Clause 4. A signed manufacturer authorization is required for every lot.",
+            "Clause 5. Lot-specific requirements and later corrigenda override general descriptions.",
+            "Clause 6. Unknown, conflicting, expired or mismatched evidence must be resolved before preparation approval.",
+            "Clause 7. This demonstration never submits, signs or pays for a bid."
+          ]
+        }
+      ],
+      "synthetic": true,
+      "hash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883"
+    },
+    {
+      "id": "lot-a",
+      "title": "Annexure A \u00b7 Outdoor learning-centre lights",
+      "role": "tender",
+      "version": 1,
+      "pages": [
+        {
+          "number": 1,
+          "lines": [
+            "SYNTHETIC ANNEXURE A \u2014 Lot A.",
+            "Lot: A",
+            "Product: SOLAR-24",
+            "Required standard: SYN-LIGHT-24-R2",
+            "Quantity: 500",
+            "Certificate type: Product conformity",
+            "Clause A.4. A certificate for a different wattage, product or revision is not acceptable."
+          ]
+        }
+      ],
+      "synthetic": true,
+      "hash": "ba184da21217fae374277e561f909198652cab0f7aaded17e623ead81565a80d"
+    },
+    {
+      "id": "lot-b",
+      "title": "Annexure B \u00b7 Study-room lights",
+      "role": "tender",
+      "version": 1,
+      "pages": [
+        {
+          "number": 1,
+          "lines": [
+            "SYNTHETIC ANNEXURE B \u2014 Lot B.",
+            "Lot: B",
+            "Product: STUDY-12",
+            "Required standard: SYN-LIGHT-12-R1",
+            "Quantity: 300",
+            "Certificate type: Product conformity",
+            "Clause B.4. Product, certificate holder and validity must match the supplied item."
+          ]
+        }
+      ],
+      "synthetic": true,
+      "hash": "a4e26666f02e90d2ba1d0413edc0978f0106be2df1e71f61282f11cef515b10f"
+    },
+    {
+      "id": "supplier-profile",
+      "title": "Suryodaya Learning Supplies \u00b7 Supplier profile",
+      "role": "supplier",
+      "version": 1,
+      "pages": [
+        {
+          "number": 1,
+          "lines": [
+            "SYNTHETIC SUPPLIER \u2014 all names and identifiers are fictional.",
+            "Legal name: Suryodaya Learning Supplies",
+            "Monthly capacity SOLAR-24: 650",
+            "Monthly capacity STUDY-12: 450",
+            "Products offered: SOLAR-24; STUDY-12",
+            "Location: Nashik, Maharashtra (fictional business)."
+          ]
+        }
+      ],
+      "synthetic": true,
+      "hash": "e09c86ac30625d0e95a75f436bd4c5c2a8871765177d89dbbec0fa1cb38bcb00"
+    },
+    {
+      "id": "certificate-a",
+      "title": "Product certificate \u00b7 Solar range",
+      "role": "supplier",
+      "version": 1,
+      "pages": [
+        {
+          "number": 1,
+          "lines": [
+            "SYNTHETIC PRODUCT CERTIFICATE \u2014 NOT VALID FOR PROCUREMENT.",
+            "Certificate holder: Suryodaya Learning Supplies",
+            "Product: SOLAR-18",
+            "Certified standard: SYN-LIGHT-18-R1",
+            "Valid until: 2027-03-31",
+            "Certificate type: Product conformity",
+            "Scope: Only SOLAR-18 under SYN-LIGHT-18-R1. No other models or revisions are covered."
+          ]
+        }
+      ],
+      "synthetic": true,
+      "hash": "9a66c3af56690c713e2fcf7f92fa556d31dabdb22443ac3dd77eb40221dd86b4"
+    },
+    {
+      "id": "certificate-b",
+      "title": "Product certificate \u00b7 Study-room range",
+      "role": "supplier",
+      "version": 1,
+      "pages": [
+        {
+          "number": 1,
+          "lines": [
+            "SYNTHETIC PRODUCT CERTIFICATE \u2014 NOT VALID FOR PROCUREMENT.",
+            "Certificate holder: Suryodaya Learning Supplies",
+            "Product: STUDY-12",
+            "Certified standard: SYN-LIGHT-12-R1",
+            "Valid until: 2027-03-31",
+            "Certificate type: Product conformity",
+            "Scope: Only STUDY-12 under SYN-LIGHT-12-R1."
+          ]
+        }
+      ],
+      "synthetic": true,
+      "hash": "006cec244ad1361f04a4b24368cafbbe7353399a65f939046a61c056e9d98887"
+    },
+    {
+      "id": "authorization",
+      "title": "Manufacturer authorization \u00b7 Both offered lots",
+      "role": "supplier",
+      "version": 1,
+      "pages": [
+        {
+          "number": 1,
+          "lines": [
+            "SYNTHETIC AUTHORIZATION \u2014 specimen only; no real signature.",
+            "Authorized supplier: Suryodaya Learning Supplies",
+            "Authorized products: SOLAR-24; STUDY-12",
+            "Authorization state: signed specimen",
+            "Valid until: 2027-03-31"
+          ]
+        }
+      ],
+      "synthetic": true,
+      "hash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212"
+    },
+    {
+      "id": "certificate-b-conflict",
+      "title": "Conflicting product certificate \u00b7 Study-room range",
+      "role": "supplier",
+      "version": 1,
+      "pages": [
+        {
+          "number": 1,
+          "lines": [
+            "SYNTHETIC PRODUCT CERTIFICATE \u2014 conflicting record.",
+            "Certificate holder: Suryodaya Learning Supplies",
+            "Product: STUDY-12",
+            "Certified standard: SYN-LIGHT-12-R0",
+            "Valid until: 2027-03-31",
+            "Certificate type: Product conformity",
+            "Scope: STUDY-12 under revision R0 only."
+          ]
+        }
+      ],
+      "synthetic": true,
+      "hash": "34da61def7e63c4a39d1c441173557e1ad4add3840e0163b62199ee9b4ae3ad4"
+    }
+  ],
+  "actual_tool_trace": [
+    {
+      "id": 1,
+      "timestamp": "2026-10-01T05:58:00.174Z",
+      "actor": "system",
+      "tool": "initialize",
+      "args": {
+        "scenario": "conflict"
+      },
+      "result": {
+        "documents": 8,
+        "synthetic": true
+      },
+      "revision": 1
+    },
+    {
+      "id": 2,
+      "timestamp": "2026-10-01T05:58:00.175Z",
+      "actor": "model",
+      "tool": "start_run",
+      "args": {
+        "goal": "Check Lot A. If its certificate does not satisfy the tender, investigate and evaluate Lot B as an alternative. Request approval for a preparation packet only if that alternative passes all evidence checks.",
+        "mode": "live"
+      },
+      "result": {
+        "runId": "76335794-5312-4edb-9e2e-85226568f5b6",
+        "model": "tendertripwire-1.7b"
+      },
+      "revision": 1
+    },
+    {
+      "id": 3,
+      "timestamp": "2026-10-01T05:58:01.888Z",
+      "actor": "model",
+      "tool": "plan_goal",
+      "args": {
+        "goal": "Check Lot A. If its certificate does not satisfy the tender, investigate and evaluate Lot B as an alternative. Request approval for a preparation packet only if that alternative passes all evidence checks."
+      },
+      "result": {
+        "lots": [
+          "A",
+          "B"
+        ],
+        "preparePacket": true
+      },
+      "revision": 1
+    },
+    {
+      "id": 4,
+      "timestamp": "2026-10-01T05:58:08.016Z",
+      "actor": "model",
+      "tool": "select_action",
+      "args": {
+        "runId": "76335794-5312-4edb-9e2e-85226568f5b6",
+        "step": 1
+      },
+      "result": {
+        "action": {
+          "tool": "list_documents",
+          "arguments": {}
+        },
+        "model": "tendertripwire-1.7b",
+        "usage": {
+          "completion_tokens": 11,
+          "prompt_tokens": 700,
+          "total_tokens": 711,
+          "prompt_tokens_details": {
+            "cached_tokens": 393
+          }
+        }
+      },
+      "revision": 1
+    },
+    {
+      "id": 5,
+      "timestamp": "2026-10-01T05:58:08.017Z",
+      "actor": "model",
+      "tool": "list_documents",
+      "args": {},
+      "result": [
+        {
+          "id": "tender-main",
+          "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+          "role": "tender",
+          "version": 1,
+          "hash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+          "pages": 1
+        },
+        {
+          "id": "lot-a",
+          "title": "Annexure A \u00b7 Outdoor learning-centre lights",
+          "role": "tender",
+          "version": 1,
+          "hash": "ba184da21217fae374277e561f909198652cab0f7aaded17e623ead81565a80d",
+          "pages": 1
+        },
+        {
+          "id": "lot-b",
+          "title": "Annexure B \u00b7 Study-room lights",
+          "role": "tender",
+          "version": 1,
+          "hash": "a4e26666f02e90d2ba1d0413edc0978f0106be2df1e71f61282f11cef515b10f",
+          "pages": 1
+        },
+        {
+          "id": "supplier-profile",
+          "title": "Suryodaya Learning Supplies \u00b7 Supplier profile",
+          "role": "supplier",
+          "version": 1,
+          "hash": "e09c86ac30625d0e95a75f436bd4c5c2a8871765177d89dbbec0fa1cb38bcb00",
+          "pages": 1
+        },
+        {
+          "id": "certificate-a",
+          "title": "Product certificate \u00b7 Solar range",
+          "role": "supplier",
+          "version": 1,
+          "hash": "9a66c3af56690c713e2fcf7f92fa556d31dabdb22443ac3dd77eb40221dd86b4",
+          "pages": 1
+        },
+        {
+          "id": "certificate-b",
+          "title": "Product certificate \u00b7 Study-room range",
+          "role": "supplier",
+          "version": 1,
+          "hash": "006cec244ad1361f04a4b24368cafbbe7353399a65f939046a61c056e9d98887",
+          "pages": 1
+        },
+        {
+          "id": "authorization",
+          "title": "Manufacturer authorization \u00b7 Both offered lots",
+          "role": "supplier",
+          "version": 1,
+          "hash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+          "pages": 1
+        },
+        {
+          "id": "certificate-b-conflict",
+          "title": "Conflicting product certificate \u00b7 Study-room range",
+          "role": "supplier",
+          "version": 1,
+          "hash": "34da61def7e63c4a39d1c441173557e1ad4add3840e0163b62199ee9b4ae3ad4",
+          "pages": 1
+        }
+      ],
+      "revision": 1
+    },
+    {
+      "id": 6,
+      "timestamp": "2026-10-01T05:58:15.268Z",
+      "actor": "model",
+      "tool": "select_action",
+      "args": {
+        "runId": "76335794-5312-4edb-9e2e-85226568f5b6",
+        "step": 2
+      },
+      "result": {
+        "action": {
+          "tool": "search_evidence",
+          "arguments": {
+            "query": "certificate-a"
+          }
+        },
+        "model": "tendertripwire-1.7b",
+        "usage": {
+          "completion_tokens": 15,
+          "prompt_tokens": 898,
+          "total_tokens": 913,
+          "prompt_tokens_details": {
+            "cached_tokens": 587
+          }
+        }
+      },
+      "revision": 1
+    },
+    {
+      "id": 7,
+      "timestamp": "2026-10-01T05:58:15.270Z",
+      "actor": "model",
+      "tool": "search_evidence",
+      "args": {
+        "query": "certificate-a"
+      },
+      "result": [
+        {
+          "documentId": "certificate-a",
+          "title": "Product certificate \u00b7 Solar range",
+          "documentHash": "9a66c3af56690c713e2fcf7f92fa556d31dabdb22443ac3dd77eb40221dd86b4",
+          "documentVersion": 1,
+          "page": 1,
+          "lineStart": 1,
+          "lineEnd": 7,
+          "quote": "SYNTHETIC PRODUCT CERTIFICATE \u2014 NOT VALID FOR PROCUREMENT.\nCertificate holder: Suryodaya Learning Supplies\nProduct: SOLAR-18\nCertified standard: SYN-LIGHT-18-R1\nValid until: 2027-03-31\nCertificate type: Product conformity\nScope: Only SOLAR-18 under SYN-LIGHT-18-R1. No other models or revisions are covered."
+        }
+      ],
+      "revision": 1
+    },
+    {
+      "id": 8,
+      "timestamp": "2026-10-01T05:58:22.884Z",
+      "actor": "model",
+      "tool": "select_action",
+      "args": {
+        "runId": "76335794-5312-4edb-9e2e-85226568f5b6",
+        "step": 3
+      },
+      "result": {
+        "action": {
+          "tool": "evaluate_lot",
+          "arguments": {
+            "lot": "A"
+          }
+        },
+        "model": "tendertripwire-1.7b",
+        "usage": {
+          "completion_tokens": 13,
+          "prompt_tokens": 1042,
+          "total_tokens": 1055,
+          "prompt_tokens_details": {
+            "cached_tokens": 667
+          }
+        }
+      },
+      "revision": 1
+    },
+    {
+      "id": 9,
+      "timestamp": "2026-10-01T05:58:22.886Z",
+      "actor": "model",
+      "tool": "evaluate_lot",
+      "args": {
+        "lot": "A"
+      },
+      "result": {
+        "lot": "A",
+        "product": "SOLAR-24",
+        "requiredStandard": "SYN-LIGHT-24-R2",
+        "quantity": 500,
+        "status": "blocked",
+        "checks": [
+          {
+            "id": "product_certificate",
+            "title": "Product and specification",
+            "status": "fail",
+            "reason": "Tender requires SOLAR-24 / SYN-LIGHT-24-R2; supplied certificate covers SOLAR-18 / SYN-LIGHT-18-R1.",
+            "citations": [
+              {
+                "documentId": "lot-a",
+                "title": "Annexure A \u00b7 Outdoor learning-centre lights",
+                "documentHash": "ba184da21217fae374277e561f909198652cab0f7aaded17e623ead81565a80d",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 3,
+                "lineEnd": 3,
+                "quote": "Product: SOLAR-24"
+              },
+              {
+                "documentId": "lot-a",
+                "title": "Annexure A \u00b7 Outdoor learning-centre lights",
+                "documentHash": "ba184da21217fae374277e561f909198652cab0f7aaded17e623ead81565a80d",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 4,
+                "lineEnd": 4,
+                "quote": "Required standard: SYN-LIGHT-24-R2"
+              },
+              {
+                "documentId": "certificate-a",
+                "title": "Product certificate \u00b7 Solar range",
+                "documentHash": "9a66c3af56690c713e2fcf7f92fa556d31dabdb22443ac3dd77eb40221dd86b4",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 3,
+                "lineEnd": 3,
+                "quote": "Product: SOLAR-18"
+              },
+              {
+                "documentId": "certificate-a",
+                "title": "Product certificate \u00b7 Solar range",
+                "documentHash": "9a66c3af56690c713e2fcf7f92fa556d31dabdb22443ac3dd77eb40221dd86b4",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 4,
+                "lineEnd": 4,
+                "quote": "Certified standard: SYN-LIGHT-18-R1"
+              }
+            ]
+          },
+          {
+            "id": "certificate_holder",
+            "title": "Certificate holder",
+            "status": "pass",
+            "reason": "Certificate holder matches the supplier legal name.",
+            "citations": [
+              {
+                "documentId": "supplier-profile",
+                "title": "Suryodaya Learning Supplies \u00b7 Supplier profile",
+                "documentHash": "e09c86ac30625d0e95a75f436bd4c5c2a8871765177d89dbbec0fa1cb38bcb00",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 2,
+                "lineEnd": 2,
+                "quote": "Legal name: Suryodaya Learning Supplies"
+              },
+              {
+                "documentId": "certificate-a",
+                "title": "Product certificate \u00b7 Solar range",
+                "documentHash": "9a66c3af56690c713e2fcf7f92fa556d31dabdb22443ac3dd77eb40221dd86b4",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 2,
+                "lineEnd": 2,
+                "quote": "Certificate holder: Suryodaya Learning Supplies"
+              },
+              {
+                "documentId": "tender-main",
+                "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+                "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 3,
+                "lineEnd": 3,
+                "quote": "Clause 1. Supplier legal name must match the product certificate holder."
+              }
+            ]
+          },
+          {
+            "id": "certificate_validity",
+            "title": "Certificate validity",
+            "status": "pass",
+            "reason": "Valid through the 2026-10-15 closing date.",
+            "citations": [
+              {
+                "documentId": "certificate-a",
+                "title": "Product certificate \u00b7 Solar range",
+                "documentHash": "9a66c3af56690c713e2fcf7f92fa556d31dabdb22443ac3dd77eb40221dd86b4",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 5,
+                "lineEnd": 5,
+                "quote": "Valid until: 2027-03-31"
+              },
+              {
+                "documentId": "tender-main",
+                "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+                "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 2,
+                "lineEnd": 2,
+                "quote": "Issuer: Fictional District Learning Centres Programme. Closing date: 2026-10-15."
+              },
+              {
+                "documentId": "tender-main",
+                "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+                "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 4,
+                "lineEnd": 4,
+                "quote": "Clause 2. Each lot requires a matching product certificate valid on the closing date."
+              }
+            ]
+          },
+          {
+            "id": "capacity",
+            "title": "Supply capacity",
+            "status": "pass",
+            "reason": "650 units/month stated; 500 units required. Supplier statement, not independently audited.",
+            "citations": [
+              {
+                "documentId": "supplier-profile",
+                "title": "Suryodaya Learning Supplies \u00b7 Supplier profile",
+                "documentHash": "e09c86ac30625d0e95a75f436bd4c5c2a8871765177d89dbbec0fa1cb38bcb00",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 3,
+                "lineEnd": 3,
+                "quote": "Monthly capacity SOLAR-24: 650"
+              },
+              {
+                "documentId": "lot-a",
+                "title": "Annexure A \u00b7 Outdoor learning-centre lights",
+                "documentHash": "ba184da21217fae374277e561f909198652cab0f7aaded17e623ead81565a80d",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 5,
+                "lineEnd": 5,
+                "quote": "Quantity: 500"
+              },
+              {
+                "documentId": "tender-main",
+                "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+                "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 5,
+                "lineEnd": 5,
+                "quote": "Clause 3. Stated monthly capacity must meet the quantity of the selected lot."
+              }
+            ]
+          },
+          {
+            "id": "authorization",
+            "title": "Manufacturer authorization",
+            "status": "pass",
+            "reason": "Synthetic signed specimen covers this supplier and product.",
+            "citations": [
+              {
+                "documentId": "authorization",
+                "title": "Manufacturer authorization \u00b7 Both offered lots",
+                "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 2,
+                "lineEnd": 2,
+                "quote": "Authorized supplier: Suryodaya Learning Supplies"
+              },
+              {
+                "documentId": "authorization",
+                "title": "Manufacturer authorization \u00b7 Both offered lots",
+                "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 3,
+                "lineEnd": 3,
+                "quote": "Authorized products: SOLAR-24; STUDY-12"
+              },
+              {
+                "documentId": "authorization",
+                "title": "Manufacturer authorization \u00b7 Both offered lots",
+                "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 4,
+                "lineEnd": 4,
+                "quote": "Authorization state: signed specimen"
+              },
+              {
+                "documentId": "authorization",
+                "title": "Manufacturer authorization \u00b7 Both offered lots",
+                "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 5,
+                "lineEnd": 5,
+                "quote": "Valid until: 2027-03-31"
+              },
+              {
+                "documentId": "tender-main",
+                "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+                "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 6,
+                "lineEnd": 6,
+                "quote": "Clause 4. A signed manufacturer authorization is required for every lot."
+              }
+            ]
+          }
+        ],
+        "revision": 1,
+        "fingerprint": "f807637ca18bd0d8a3524ec436d6afd4165838d9902e2771326c461c8e40f450",
+        "evaluatedAt": "2026-10-01T05:58:22.886Z",
+        "scope": "Suitability for synthetic packet preparation only",
+        "digest": "f4ac93e6e69d398501fa338c166b96681cb681776b139962e550b0b13c89d722"
+      },
+      "revision": 1
+    },
+    {
+      "id": 10,
+      "timestamp": "2026-10-01T05:58:42.277Z",
+      "actor": "model",
+      "tool": "select_action",
+      "args": {
+        "runId": "76335794-5312-4edb-9e2e-85226568f5b6",
+        "step": 4
+      },
+      "result": {
+        "action": {
+          "tool": "search_evidence",
+          "arguments": {
+            "query": "certificate-b"
+          }
+        },
+        "model": "tendertripwire-1.7b",
+        "usage": {
+          "completion_tokens": 15,
+          "prompt_tokens": 1598,
+          "total_tokens": 1613,
+          "prompt_tokens_details": {
+            "cached_tokens": 570
+          }
+        }
+      },
+      "revision": 1
+    },
+    {
+      "id": 11,
+      "timestamp": "2026-10-01T05:58:42.278Z",
+      "actor": "model",
+      "tool": "search_evidence",
+      "args": {
+        "query": "certificate-b"
+      },
+      "result": [
+        {
+          "documentId": "certificate-b",
+          "title": "Product certificate \u00b7 Study-room range",
+          "documentHash": "006cec244ad1361f04a4b24368cafbbe7353399a65f939046a61c056e9d98887",
+          "documentVersion": 1,
+          "page": 1,
+          "lineStart": 1,
+          "lineEnd": 7,
+          "quote": "SYNTHETIC PRODUCT CERTIFICATE \u2014 NOT VALID FOR PROCUREMENT.\nCertificate holder: Suryodaya Learning Supplies\nProduct: STUDY-12\nCertified standard: SYN-LIGHT-12-R1\nValid until: 2027-03-31\nCertificate type: Product conformity\nScope: Only STUDY-12 under SYN-LIGHT-12-R1."
+        },
+        {
+          "documentId": "certificate-b-conflict",
+          "title": "Conflicting product certificate \u00b7 Study-room range",
+          "documentHash": "34da61def7e63c4a39d1c441173557e1ad4add3840e0163b62199ee9b4ae3ad4",
+          "documentVersion": 1,
+          "page": 1,
+          "lineStart": 1,
+          "lineEnd": 7,
+          "quote": "SYNTHETIC PRODUCT CERTIFICATE \u2014 conflicting record.\nCertificate holder: Suryodaya Learning Supplies\nProduct: STUDY-12\nCertified standard: SYN-LIGHT-12-R0\nValid until: 2027-03-31\nCertificate type: Product conformity\nScope: STUDY-12 under revision R0 only."
+        }
+      ],
+      "revision": 1
+    },
+    {
+      "id": 12,
+      "timestamp": "2026-10-01T05:59:00.206Z",
+      "actor": "model",
+      "tool": "select_action",
+      "args": {
+        "runId": "76335794-5312-4edb-9e2e-85226568f5b6",
+        "step": 5
+      },
+      "result": {
+        "action": {
+          "tool": "evaluate_lot",
+          "arguments": {
+            "lot": "B"
+          }
+        },
+        "model": "tendertripwire-1.7b",
+        "usage": {
+          "completion_tokens": 13,
+          "prompt_tokens": 1692,
+          "total_tokens": 1705,
+          "prompt_tokens_details": {
+            "cached_tokens": 687
+          }
+        }
+      },
+      "revision": 1
+    },
+    {
+      "id": 13,
+      "timestamp": "2026-10-01T05:59:00.209Z",
+      "actor": "model",
+      "tool": "evaluate_lot",
+      "args": {
+        "lot": "B"
+      },
+      "result": {
+        "lot": "B",
+        "product": "STUDY-12",
+        "requiredStandard": "SYN-LIGHT-12-R1",
+        "quantity": 300,
+        "status": "needs_evidence",
+        "checks": [
+          {
+            "id": "product_certificate",
+            "title": "Product and specification",
+            "status": "conflict",
+            "reason": "Certificate records or fields disagree. Obtain authoritative clarification.",
+            "citations": [
+              {
+                "documentId": "lot-b",
+                "title": "Annexure B \u00b7 Study-room lights",
+                "documentHash": "a4e26666f02e90d2ba1d0413edc0978f0106be2df1e71f61282f11cef515b10f",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 3,
+                "lineEnd": 3,
+                "quote": "Product: STUDY-12"
+              },
+              {
+                "documentId": "lot-b",
+                "title": "Annexure B \u00b7 Study-room lights",
+                "documentHash": "a4e26666f02e90d2ba1d0413edc0978f0106be2df1e71f61282f11cef515b10f",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 4,
+                "lineEnd": 4,
+                "quote": "Required standard: SYN-LIGHT-12-R1"
+              },
+              {
+                "documentId": "certificate-b",
+                "title": "Product certificate \u00b7 Study-room range",
+                "documentHash": "006cec244ad1361f04a4b24368cafbbe7353399a65f939046a61c056e9d98887",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 3,
+                "lineEnd": 3,
+                "quote": "Product: STUDY-12"
+              },
+              {
+                "documentId": "certificate-b",
+                "title": "Product certificate \u00b7 Study-room range",
+                "documentHash": "006cec244ad1361f04a4b24368cafbbe7353399a65f939046a61c056e9d98887",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 4,
+                "lineEnd": 4,
+                "quote": "Certified standard: SYN-LIGHT-12-R1"
+              },
+              {
+                "documentId": "certificate-b-conflict",
+                "title": "Conflicting product certificate \u00b7 Study-room range",
+                "documentHash": "34da61def7e63c4a39d1c441173557e1ad4add3840e0163b62199ee9b4ae3ad4",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 3,
+                "lineEnd": 3,
+                "quote": "Product: STUDY-12"
+              },
+              {
+                "documentId": "certificate-b-conflict",
+                "title": "Conflicting product certificate \u00b7 Study-room range",
+                "documentHash": "34da61def7e63c4a39d1c441173557e1ad4add3840e0163b62199ee9b4ae3ad4",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 4,
+                "lineEnd": 4,
+                "quote": "Certified standard: SYN-LIGHT-12-R0"
+              }
+            ]
+          },
+          {
+            "id": "certificate_holder",
+            "title": "Certificate holder",
+            "status": "unknown",
+            "reason": "A single authoritative certificate is required.",
+            "citations": [
+              {
+                "documentId": "supplier-profile",
+                "title": "Suryodaya Learning Supplies \u00b7 Supplier profile",
+                "documentHash": "e09c86ac30625d0e95a75f436bd4c5c2a8871765177d89dbbec0fa1cb38bcb00",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 2,
+                "lineEnd": 2,
+                "quote": "Legal name: Suryodaya Learning Supplies"
+              },
+              {
+                "documentId": "tender-main",
+                "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+                "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 3,
+                "lineEnd": 3,
+                "quote": "Clause 1. Supplier legal name must match the product certificate holder."
+              }
+            ]
+          },
+          {
+            "id": "certificate_validity",
+            "title": "Certificate validity",
+            "status": "unknown",
+            "reason": "Certificate validity or tender closing date is missing or ambiguous.",
+            "citations": [
+              {
+                "documentId": "tender-main",
+                "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+                "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 2,
+                "lineEnd": 2,
+                "quote": "Issuer: Fictional District Learning Centres Programme. Closing date: 2026-10-15."
+              },
+              {
+                "documentId": "tender-main",
+                "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+                "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 4,
+                "lineEnd": 4,
+                "quote": "Clause 2. Each lot requires a matching product certificate valid on the closing date."
+              }
+            ]
+          },
+          {
+            "id": "capacity",
+            "title": "Supply capacity",
+            "status": "pass",
+            "reason": "450 units/month stated; 300 units required. Supplier statement, not independently audited.",
+            "citations": [
+              {
+                "documentId": "supplier-profile",
+                "title": "Suryodaya Learning Supplies \u00b7 Supplier profile",
+                "documentHash": "e09c86ac30625d0e95a75f436bd4c5c2a8871765177d89dbbec0fa1cb38bcb00",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 4,
+                "lineEnd": 4,
+                "quote": "Monthly capacity STUDY-12: 450"
+              },
+              {
+                "documentId": "lot-b",
+                "title": "Annexure B \u00b7 Study-room lights",
+                "documentHash": "a4e26666f02e90d2ba1d0413edc0978f0106be2df1e71f61282f11cef515b10f",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 5,
+                "lineEnd": 5,
+                "quote": "Quantity: 300"
+              },
+              {
+                "documentId": "tender-main",
+                "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+                "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 5,
+                "lineEnd": 5,
+                "quote": "Clause 3. Stated monthly capacity must meet the quantity of the selected lot."
+              }
+            ]
+          },
+          {
+            "id": "authorization",
+            "title": "Manufacturer authorization",
+            "status": "pass",
+            "reason": "Synthetic signed specimen covers this supplier and product.",
+            "citations": [
+              {
+                "documentId": "authorization",
+                "title": "Manufacturer authorization \u00b7 Both offered lots",
+                "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 2,
+                "lineEnd": 2,
+                "quote": "Authorized supplier: Suryodaya Learning Supplies"
+              },
+              {
+                "documentId": "authorization",
+                "title": "Manufacturer authorization \u00b7 Both offered lots",
+                "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 3,
+                "lineEnd": 3,
+                "quote": "Authorized products: SOLAR-24; STUDY-12"
+              },
+              {
+                "documentId": "authorization",
+                "title": "Manufacturer authorization \u00b7 Both offered lots",
+                "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 4,
+                "lineEnd": 4,
+                "quote": "Authorization state: signed specimen"
+              },
+              {
+                "documentId": "authorization",
+                "title": "Manufacturer authorization \u00b7 Both offered lots",
+                "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 5,
+                "lineEnd": 5,
+                "quote": "Valid until: 2027-03-31"
+              },
+              {
+                "documentId": "tender-main",
+                "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+                "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+                "documentVersion": 1,
+                "page": 1,
+                "lineStart": 6,
+                "lineEnd": 6,
+                "quote": "Clause 4. A signed manufacturer authorization is required for every lot."
+              }
+            ]
+          }
+        ],
+        "revision": 1,
+        "fingerprint": "f807637ca18bd0d8a3524ec436d6afd4165838d9902e2771326c461c8e40f450",
+        "evaluatedAt": "2026-10-01T05:59:00.209Z",
+        "scope": "Suitability for synthetic packet preparation only",
+        "digest": "89d8e19eebc8f6357b659e7025e9a882a8e8a73b4fed378152a010f8f27497cf"
+      },
+      "revision": 1
+    },
+    {
+      "id": 14,
+      "timestamp": "2026-10-01T05:59:24.130Z",
+      "actor": "model",
+      "tool": "select_action",
+      "args": {
+        "runId": "76335794-5312-4edb-9e2e-85226568f5b6",
+        "step": 6
+      },
+      "result": {
+        "action": {
+          "tool": "finish",
+          "arguments": {
+            "summary": "Lot B requires authoritative clarification on conflicting product specifications and certificate holder. Lot A is blocked due to mismatched standards. No preparation packet can be requested as evidence is insufficient for Lot B."
+          }
+        },
+        "model": "tendertripwire-1.7b",
+        "usage": {
+          "completion_tokens": 48,
+          "prompt_tokens": 1712,
+          "total_tokens": 1760,
+          "prompt_tokens_details": {
+            "cached_tokens": 633
+          }
+        }
+      },
+      "revision": 1
+    },
+    {
+      "id": 15,
+      "timestamp": "2026-10-01T05:59:24.132Z",
+      "actor": "system",
+      "tool": "finish_run",
+      "args": {
+        "runId": "76335794-5312-4edb-9e2e-85226568f5b6"
+      },
+      "result": {
+        "status": "completed",
+        "modelCalls": 7,
+        "toolCalls": 5,
+        "durationMs": 83958,
+        "summary": "Lot A is blocked: Tender requires SOLAR-24 / SYN-LIGHT-24-R2; supplied certificate covers SOLAR-18 / SYN-LIGHT-18-R1. Lot B needs evidence: Certificate records or fields disagree. Obtain authoritative clarification. A single authoritative certificate is required. Certificate validity or tender closing date is missing or ambiguous. Preparation only; no bid has been submitted."
+      },
+      "revision": 1
+    }
+  ],
+  "final_evaluations": {
+    "A": {
+      "lot": "A",
+      "product": "SOLAR-24",
+      "requiredStandard": "SYN-LIGHT-24-R2",
+      "quantity": 500,
+      "status": "blocked",
+      "checks": [
+        {
+          "id": "product_certificate",
+          "title": "Product and specification",
+          "status": "fail",
+          "reason": "Tender requires SOLAR-24 / SYN-LIGHT-24-R2; supplied certificate covers SOLAR-18 / SYN-LIGHT-18-R1.",
+          "citations": [
+            {
+              "documentId": "lot-a",
+              "title": "Annexure A \u00b7 Outdoor learning-centre lights",
+              "documentHash": "ba184da21217fae374277e561f909198652cab0f7aaded17e623ead81565a80d",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 3,
+              "lineEnd": 3,
+              "quote": "Product: SOLAR-24"
+            },
+            {
+              "documentId": "lot-a",
+              "title": "Annexure A \u00b7 Outdoor learning-centre lights",
+              "documentHash": "ba184da21217fae374277e561f909198652cab0f7aaded17e623ead81565a80d",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 4,
+              "lineEnd": 4,
+              "quote": "Required standard: SYN-LIGHT-24-R2"
+            },
+            {
+              "documentId": "certificate-a",
+              "title": "Product certificate \u00b7 Solar range",
+              "documentHash": "9a66c3af56690c713e2fcf7f92fa556d31dabdb22443ac3dd77eb40221dd86b4",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 3,
+              "lineEnd": 3,
+              "quote": "Product: SOLAR-18"
+            },
+            {
+              "documentId": "certificate-a",
+              "title": "Product certificate \u00b7 Solar range",
+              "documentHash": "9a66c3af56690c713e2fcf7f92fa556d31dabdb22443ac3dd77eb40221dd86b4",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 4,
+              "lineEnd": 4,
+              "quote": "Certified standard: SYN-LIGHT-18-R1"
+            }
+          ]
+        },
+        {
+          "id": "certificate_holder",
+          "title": "Certificate holder",
+          "status": "pass",
+          "reason": "Certificate holder matches the supplier legal name.",
+          "citations": [
+            {
+              "documentId": "supplier-profile",
+              "title": "Suryodaya Learning Supplies \u00b7 Supplier profile",
+              "documentHash": "e09c86ac30625d0e95a75f436bd4c5c2a8871765177d89dbbec0fa1cb38bcb00",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 2,
+              "lineEnd": 2,
+              "quote": "Legal name: Suryodaya Learning Supplies"
+            },
+            {
+              "documentId": "certificate-a",
+              "title": "Product certificate \u00b7 Solar range",
+              "documentHash": "9a66c3af56690c713e2fcf7f92fa556d31dabdb22443ac3dd77eb40221dd86b4",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 2,
+              "lineEnd": 2,
+              "quote": "Certificate holder: Suryodaya Learning Supplies"
+            },
+            {
+              "documentId": "tender-main",
+              "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+              "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 3,
+              "lineEnd": 3,
+              "quote": "Clause 1. Supplier legal name must match the product certificate holder."
+            }
+          ]
+        },
+        {
+          "id": "certificate_validity",
+          "title": "Certificate validity",
+          "status": "pass",
+          "reason": "Valid through the 2026-10-15 closing date.",
+          "citations": [
+            {
+              "documentId": "certificate-a",
+              "title": "Product certificate \u00b7 Solar range",
+              "documentHash": "9a66c3af56690c713e2fcf7f92fa556d31dabdb22443ac3dd77eb40221dd86b4",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 5,
+              "lineEnd": 5,
+              "quote": "Valid until: 2027-03-31"
+            },
+            {
+              "documentId": "tender-main",
+              "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+              "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 2,
+              "lineEnd": 2,
+              "quote": "Issuer: Fictional District Learning Centres Programme. Closing date: 2026-10-15."
+            },
+            {
+              "documentId": "tender-main",
+              "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+              "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 4,
+              "lineEnd": 4,
+              "quote": "Clause 2. Each lot requires a matching product certificate valid on the closing date."
+            }
+          ]
+        },
+        {
+          "id": "capacity",
+          "title": "Supply capacity",
+          "status": "pass",
+          "reason": "650 units/month stated; 500 units required. Supplier statement, not independently audited.",
+          "citations": [
+            {
+              "documentId": "supplier-profile",
+              "title": "Suryodaya Learning Supplies \u00b7 Supplier profile",
+              "documentHash": "e09c86ac30625d0e95a75f436bd4c5c2a8871765177d89dbbec0fa1cb38bcb00",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 3,
+              "lineEnd": 3,
+              "quote": "Monthly capacity SOLAR-24: 650"
+            },
+            {
+              "documentId": "lot-a",
+              "title": "Annexure A \u00b7 Outdoor learning-centre lights",
+              "documentHash": "ba184da21217fae374277e561f909198652cab0f7aaded17e623ead81565a80d",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 5,
+              "lineEnd": 5,
+              "quote": "Quantity: 500"
+            },
+            {
+              "documentId": "tender-main",
+              "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+              "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 5,
+              "lineEnd": 5,
+              "quote": "Clause 3. Stated monthly capacity must meet the quantity of the selected lot."
+            }
+          ]
+        },
+        {
+          "id": "authorization",
+          "title": "Manufacturer authorization",
+          "status": "pass",
+          "reason": "Synthetic signed specimen covers this supplier and product.",
+          "citations": [
+            {
+              "documentId": "authorization",
+              "title": "Manufacturer authorization \u00b7 Both offered lots",
+              "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 2,
+              "lineEnd": 2,
+              "quote": "Authorized supplier: Suryodaya Learning Supplies"
+            },
+            {
+              "documentId": "authorization",
+              "title": "Manufacturer authorization \u00b7 Both offered lots",
+              "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 3,
+              "lineEnd": 3,
+              "quote": "Authorized products: SOLAR-24; STUDY-12"
+            },
+            {
+              "documentId": "authorization",
+              "title": "Manufacturer authorization \u00b7 Both offered lots",
+              "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 4,
+              "lineEnd": 4,
+              "quote": "Authorization state: signed specimen"
+            },
+            {
+              "documentId": "authorization",
+              "title": "Manufacturer authorization \u00b7 Both offered lots",
+              "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 5,
+              "lineEnd": 5,
+              "quote": "Valid until: 2027-03-31"
+            },
+            {
+              "documentId": "tender-main",
+              "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+              "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 6,
+              "lineEnd": 6,
+              "quote": "Clause 4. A signed manufacturer authorization is required for every lot."
+            }
+          ]
+        }
+      ],
+      "revision": 1,
+      "fingerprint": "f807637ca18bd0d8a3524ec436d6afd4165838d9902e2771326c461c8e40f450",
+      "evaluatedAt": "2026-10-01T05:58:22.886Z",
+      "scope": "Suitability for synthetic packet preparation only",
+      "digest": "f4ac93e6e69d398501fa338c166b96681cb681776b139962e550b0b13c89d722"
+    },
+    "B": {
+      "lot": "B",
+      "product": "STUDY-12",
+      "requiredStandard": "SYN-LIGHT-12-R1",
+      "quantity": 300,
+      "status": "needs_evidence",
+      "checks": [
+        {
+          "id": "product_certificate",
+          "title": "Product and specification",
+          "status": "conflict",
+          "reason": "Certificate records or fields disagree. Obtain authoritative clarification.",
+          "citations": [
+            {
+              "documentId": "lot-b",
+              "title": "Annexure B \u00b7 Study-room lights",
+              "documentHash": "a4e26666f02e90d2ba1d0413edc0978f0106be2df1e71f61282f11cef515b10f",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 3,
+              "lineEnd": 3,
+              "quote": "Product: STUDY-12"
+            },
+            {
+              "documentId": "lot-b",
+              "title": "Annexure B \u00b7 Study-room lights",
+              "documentHash": "a4e26666f02e90d2ba1d0413edc0978f0106be2df1e71f61282f11cef515b10f",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 4,
+              "lineEnd": 4,
+              "quote": "Required standard: SYN-LIGHT-12-R1"
+            },
+            {
+              "documentId": "certificate-b",
+              "title": "Product certificate \u00b7 Study-room range",
+              "documentHash": "006cec244ad1361f04a4b24368cafbbe7353399a65f939046a61c056e9d98887",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 3,
+              "lineEnd": 3,
+              "quote": "Product: STUDY-12"
+            },
+            {
+              "documentId": "certificate-b",
+              "title": "Product certificate \u00b7 Study-room range",
+              "documentHash": "006cec244ad1361f04a4b24368cafbbe7353399a65f939046a61c056e9d98887",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 4,
+              "lineEnd": 4,
+              "quote": "Certified standard: SYN-LIGHT-12-R1"
+            },
+            {
+              "documentId": "certificate-b-conflict",
+              "title": "Conflicting product certificate \u00b7 Study-room range",
+              "documentHash": "34da61def7e63c4a39d1c441173557e1ad4add3840e0163b62199ee9b4ae3ad4",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 3,
+              "lineEnd": 3,
+              "quote": "Product: STUDY-12"
+            },
+            {
+              "documentId": "certificate-b-conflict",
+              "title": "Conflicting product certificate \u00b7 Study-room range",
+              "documentHash": "34da61def7e63c4a39d1c441173557e1ad4add3840e0163b62199ee9b4ae3ad4",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 4,
+              "lineEnd": 4,
+              "quote": "Certified standard: SYN-LIGHT-12-R0"
+            }
+          ]
+        },
+        {
+          "id": "certificate_holder",
+          "title": "Certificate holder",
+          "status": "unknown",
+          "reason": "A single authoritative certificate is required.",
+          "citations": [
+            {
+              "documentId": "supplier-profile",
+              "title": "Suryodaya Learning Supplies \u00b7 Supplier profile",
+              "documentHash": "e09c86ac30625d0e95a75f436bd4c5c2a8871765177d89dbbec0fa1cb38bcb00",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 2,
+              "lineEnd": 2,
+              "quote": "Legal name: Suryodaya Learning Supplies"
+            },
+            {
+              "documentId": "tender-main",
+              "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+              "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 3,
+              "lineEnd": 3,
+              "quote": "Clause 1. Supplier legal name must match the product certificate holder."
+            }
+          ]
+        },
+        {
+          "id": "certificate_validity",
+          "title": "Certificate validity",
+          "status": "unknown",
+          "reason": "Certificate validity or tender closing date is missing or ambiguous.",
+          "citations": [
+            {
+              "documentId": "tender-main",
+              "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+              "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 2,
+              "lineEnd": 2,
+              "quote": "Issuer: Fictional District Learning Centres Programme. Closing date: 2026-10-15."
+            },
+            {
+              "documentId": "tender-main",
+              "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+              "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 4,
+              "lineEnd": 4,
+              "quote": "Clause 2. Each lot requires a matching product certificate valid on the closing date."
+            }
+          ]
+        },
+        {
+          "id": "capacity",
+          "title": "Supply capacity",
+          "status": "pass",
+          "reason": "450 units/month stated; 300 units required. Supplier statement, not independently audited.",
+          "citations": [
+            {
+              "documentId": "supplier-profile",
+              "title": "Suryodaya Learning Supplies \u00b7 Supplier profile",
+              "documentHash": "e09c86ac30625d0e95a75f436bd4c5c2a8871765177d89dbbec0fa1cb38bcb00",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 4,
+              "lineEnd": 4,
+              "quote": "Monthly capacity STUDY-12: 450"
+            },
+            {
+              "documentId": "lot-b",
+              "title": "Annexure B \u00b7 Study-room lights",
+              "documentHash": "a4e26666f02e90d2ba1d0413edc0978f0106be2df1e71f61282f11cef515b10f",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 5,
+              "lineEnd": 5,
+              "quote": "Quantity: 300"
+            },
+            {
+              "documentId": "tender-main",
+              "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+              "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 5,
+              "lineEnd": 5,
+              "quote": "Clause 3. Stated monthly capacity must meet the quantity of the selected lot."
+            }
+          ]
+        },
+        {
+          "id": "authorization",
+          "title": "Manufacturer authorization",
+          "status": "pass",
+          "reason": "Synthetic signed specimen covers this supplier and product.",
+          "citations": [
+            {
+              "documentId": "authorization",
+              "title": "Manufacturer authorization \u00b7 Both offered lots",
+              "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 2,
+              "lineEnd": 2,
+              "quote": "Authorized supplier: Suryodaya Learning Supplies"
+            },
+            {
+              "documentId": "authorization",
+              "title": "Manufacturer authorization \u00b7 Both offered lots",
+              "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 3,
+              "lineEnd": 3,
+              "quote": "Authorized products: SOLAR-24; STUDY-12"
+            },
+            {
+              "documentId": "authorization",
+              "title": "Manufacturer authorization \u00b7 Both offered lots",
+              "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 4,
+              "lineEnd": 4,
+              "quote": "Authorization state: signed specimen"
+            },
+            {
+              "documentId": "authorization",
+              "title": "Manufacturer authorization \u00b7 Both offered lots",
+              "documentHash": "df523c8cf0e01e459a19fb5a8e855d183edd319f26e4384cf2182630fc567212",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 5,
+              "lineEnd": 5,
+              "quote": "Valid until: 2027-03-31"
+            },
+            {
+              "documentId": "tender-main",
+              "title": "District Learning Centres \u00b7 Tender TT-2026-017",
+              "documentHash": "f79f67a8593baaeb0317324ba20d8b8dd132276cad94670c4f18ad7f37dba883",
+              "documentVersion": 1,
+              "page": 1,
+              "lineStart": 6,
+              "lineEnd": 6,
+              "quote": "Clause 4. A signed manufacturer authorization is required for every lot."
+            }
+          ]
+        }
+      ],
+      "revision": 1,
+      "fingerprint": "f807637ca18bd0d8a3524ec436d6afd4165838d9902e2771326c461c8e40f450",
+      "evaluatedAt": "2026-10-01T05:59:00.209Z",
+      "scope": "Suitability for synthetic packet preparation only",
+      "digest": "89d8e19eebc8f6357b659e7025e9a882a8e8a73b4fed378152a010f8f27497cf"
+    }
+  },
+  "final_packet_status": []
+}

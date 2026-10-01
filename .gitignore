@@ -1,0 +1,11 @@
+data/*.json
+data/*.tmp
+.env
+node_modules/
+.sites-runtime/
+.openai/
+dist/
+artifacts/
+*.gguf
+runtime/
+__pycache__/

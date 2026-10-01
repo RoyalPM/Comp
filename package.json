@@ -1,0 +1,16 @@
+{
+  "name": "tendertripwire",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Synthetic evidence-linked tender preparation agent with revision-bound approval gates",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test tests/*.test.js",
+    "check": "node --check src/core.js && node --check src/server.js && node --check src/controller.js",
+    "demo": "node scripts/demo.js",
+    "aikart": "node src/aikart.js"
+  },
+  "engines": {"node": ">=22"},
+  "license": "MIT"
+}

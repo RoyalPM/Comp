@@ -1,0 +1,32 @@
+# TEMPLATE ONLY: replace the public image reference after the owner publishes and verifies it.
+# The official aiKart sandbox guide is a draft and the sandbox is described as upcoming.
+apiVersion: aikart.dev/v1
+kind: AgentManifest
+metadata:
+  name: tendertripwire
+  displayName: "TenderTripwire"
+  description: "Synthetic, evidence-linked tender checks with a self-hosted local model and human-gated packet preparation."
+runtime:
+  type: docker
+  image: "REPLACE_WITH_VERIFIED_PUBLIC_REGISTRY_IMAGE"
+  command: ["bash", "scripts/container-run.sh", "aikart"]
+resources:
+  cpu: 2
+  memoryMb: 4096
+  timeoutSeconds: 280
+inputs:
+  - name: goal
+    label: "Preparation goal (synthetic documents only)"
+    type: textarea
+    required: true
+    default: "Check Lot A, investigate Lot B if needed, and request human review only when evidence supports preparation."
+  - name: scenario
+    label: "Synthetic evidence scenario"
+    type: select
+    required: true
+    options: ["baseline", "missing", "conflict", "injection"]
+    default: "baseline"
+output:
+  format: markdown
+security:
+  networkEgress: none

@@ -1,0 +1,13 @@
+services:
+  tendertripwire:
+    build:
+      context: ..
+      dockerfile: Dockerfile.local-model
+    ports:
+      - "127.0.0.1:8787:8787"
+    cpus: 2
+    mem_limit: 4g
+    volumes:
+      - tendertripwire-data:/app/data
+volumes:
+  tendertripwire-data:

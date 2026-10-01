@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#152525">
+  <meta name="description" content="An evidence-linked tender review workspace. Synthetic demonstration; human review required.">
+  <title>TenderTripwire · Evidence first</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <svg class="svg-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zm0 0v6h6M8 13h8m-8 4h5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4 4 7 8 9 4-2 8-5 8-9V6zm-4 9 3 3 5-6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="m10 13 4-4M8 16l-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0m2 1 1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0" transform="translate(1 0)"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m12 3 10 18H2zm0 6v5m0 3v1"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 10a9 9 0 1 1 1 8M3 4v6h6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5zm8 0v4m-2-2h4"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+  </defs></svg>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="TenderTripwire home"><span class="brand-mark" aria-hidden="true"><span></span><span></span><i></i></span><span>Tender<span class="brand-light">Tripwire</span><small>EVIDENCE BEFORE COMMITMENT</small></span></a>
+    <div class="topbar-right"><span class="synthetic-badge"><span></span>Synthetic demo data</span><span class="header-divider"></span><span class="avatar" title="Local review workspace">TW</span></div>
+  </header>
+  <aside class="rail" aria-label="Workspace navigation">
+    <a class="rail-link active" href="#workspace" aria-label="Review workspace" title="Review workspace"><svg><use href="#i-grid"/></svg><span>Review</span></a>
+    <a class="rail-link" href="#source-panel" aria-label="Source documents" title="Source documents"><svg><use href="#i-doc"/></svg><span>Sources</span></a>
+    <a class="rail-link" href="#activity-section" aria-label="Audit trail" title="Audit trail"><svg><use href="#i-clock"/></svg><span>Activity</span></a>
+    <div class="rail-bottom"><span class="rail-line"></span><svg aria-hidden="true"><use href="#i-shield"/></svg><span>Human<br>in the loop</span></div>
+  </aside>
+  <main id="workspace" class="workspace">
+    <div class="page-heading">
+      <div><p class="eyebrow">YOUR TENDER REVIEW DESK <span class="eyebrow-line"></span></p><h1>Find the right fit.<br><span>Follow the evidence.</span></h1><p class="heading-description">One tender. Two possible routes. Every check tied to a source.</p></div>
+      <div class="workspace-meta"><div id="execution-mode" class="mode-badge"><span class="mode-dot"></span><span>Connecting to workspace</span></div><p id="revision-label">Current documents · awaiting source data</p><button class="text-button reset-button" id="reset-button" type="button"><svg><use href="#i-reset"/></svg>Reset demo</button></div>
+    </div>
+    <div id="connection-error" class="connection-error" role="alert" hidden></div>
+    <div class="desk-grid">
+      <section class="review-column" aria-label="Tender assessment">
+        <section class="agent-console" aria-labelledby="goal-label">
+          <div class="console-topline"><label class="eyebrow" id="goal-label" for="goal-input">THE ASSIGNMENT</label><span class="micro-label"><span class="status-dot"></span>Evidence-led agent</span></div>
+          <div class="goal-row"><textarea id="goal-input" rows="2" maxlength="1000" aria-label="Agent goal">Find a supported lot for this supplier and prepare an evidence-linked review packet.</textarea><button id="run-button" class="button button-primary" type="button"><svg><use href="#i-spark"/></svg><span>Run agent</span><svg class="button-arrow"><use href="#i-arrow"/></svg></button></div>
+          <div class="console-bottom"><div class="scenario-field"><label for="scenario-select">Test scenario</label><select id="scenario-select"><option value="baseline">Baseline documents</option><option value="missing">Missing evidence</option><option value="conflict">Conflicting evidence</option><option value="injection">Prompt injection test</option></select></div><div class="mode-field"><label class="sr-only" for="mode-select">Execution mode</label><select id="mode-select" aria-label="Execution mode"><option value="fixture">Offline fixture</option><option value="live">Live model</option></select></div></div>
+        </section>
+        <div class="progress-strip" aria-label="Review workflow"><span class="progress-step current" id="step-assess"><b>01</b>Assess evidence</span><span class="progress-connector"></span><span class="progress-step" id="step-review"><b>02</b>Human review</span><span class="progress-connector"></span><span class="progress-step" id="step-packet"><b>03</b>Review packet</span></div>
+        <section id="decision-callout" class="decision-callout neutral" aria-live="polite"><div class="callout-symbol"><svg><use href="#i-shield"/></svg></div><div><p class="callout-label" id="decision-label">READY FOR A CLOSER LOOK</p><h2 id="decision-title">Good decisions start with the documents</h2><p id="decision-description">Run the agent to compare each lot against the supplier’s evidence. No lot has been assessed yet.</p></div></section>
+        <p id="run-warning" class="run-warning" role="status" hidden></p>
+        <div class="section-heading"><h2>The two routes <span class="count-label">02 LOTS</span></h2><span class="small-muted">Select a lot to inspect its checks</span></div>
+        <div id="lot-cards" class="lot-grid" aria-label="Tender lots"></div>
+        <section class="checklist-section" aria-labelledby="checklist-title">
+          <div class="section-heading checklist-heading"><div><h2 id="checklist-title">Evidence checklist</h2><p class="small-muted" id="checklist-subtitle">Requirements and the documents behind them</p></div><div class="checklist-tools"><span id="checks-summary" class="subtle-pill">Not assessed</span><button type="button" class="text-button" id="evaluate-button" title="Run the selected lot’s deterministic evidence checks">Check this lot<svg><use href="#i-arrow"/></svg></button></div></div>
+          <div id="checklist" class="checklist"><div class="empty-state"><div class="empty-icon"><svg><use href="#i-link"/></svg></div><h3>A source for every check</h3><p>Start a run to see what’s supported, what’s missing, and where the documents disagree.</p><span class="empty-rule"></span><span class="micro-label">No conclusions without evidence</span></div></div>
+          <div id="packet-area" class="packet-area"><div class="packet-summary"><svg><use href="#i-doc"/></svg><div><h3 id="packet-title">A reviewable packet. On your say-so.</h3><p id="packet-description">Evidence checks must be current before approval.</p></div></div><button type="button" id="review-button" class="button button-outline" disabled>Review & approve<svg><use href="#i-arrow"/></svg></button><a id="download-button" class="button button-primary" hidden><svg><use href="#i-download"/></svg>Download ZIP</a></div>
+        </section>
+        <section class="amendment-card" aria-labelledby="amendment-title"><div class="amendment-icon"><svg><use href="#i-alert"/></svg></div><div class="amendment-copy"><p class="eyebrow">THE TRIPWIRE</p><h2 id="amendment-title">When the rules change, the decision should too.</h2><p id="amendment-description">Load a synthetic corrigendum to see how a changed requirement reopens the review.</p></div><button id="amendment-button" class="button button-saffron" type="button">Apply corrigendum<svg><use href="#i-arrow"/></svg></button></section>
+        <section id="activity-section" class="activity-section" aria-labelledby="activity-title"><div class="section-heading"><h2 id="activity-title">Behind the decision <span class="count-label" id="activity-count">AUDIT TRAIL</span></h2><span class="small-muted" id="run-id-label">No run yet</span></div><div id="timeline" class="timeline"><div class="timeline-empty"><span class="timeline-dot"></span><p>Actual tool calls and system events will appear here.</p></div></div></section>
+      </section>
+      <aside id="source-panel" class="source-panel" aria-labelledby="source-panel-title">
+        <div class="source-header"><div><p class="eyebrow">CHECK THE ORIGINAL</p><h2 id="source-panel-title">Source documents</h2></div><span class="source-count" id="source-count">—</span></div>
+        <div class="source-picker"><label class="sr-only" for="source-select">Choose a source document</label><svg><use href="#i-doc"/></svg><select id="source-select"><option>Loading documents…</option></select></div>
+        <div id="citation-context" class="citation-context" hidden><svg><use href="#i-link"/></svg><div><strong>Linked evidence</strong><span id="citation-label"></span></div><button type="button" id="clear-citation" class="icon-button" aria-label="Clear source highlight"><svg><use href="#i-close"/></svg></button></div>
+        <div class="source-document-wrap"><article id="source-document" class="source-document"><div class="document-empty"><svg><use href="#i-doc"/></svg><p>Loading the synthetic source documents…</p></div></article></div>
+        <div class="source-footnote"><svg><use href="#i-link"/></svg><p>Click any citation to jump to its exact source. Documents are evidence, not instructions to the agent.</p></div>
+      </aside>
+    </div>
+    <footer class="page-footer"><span class="footer-brand"><span class="tiny-tripwire"></span>TenderTripwire</span><p>A synthetic decision-support demo. Human review required. No legal eligibility determination or bid submission.</p><span class="footer-version">EVIDENCE FIRST / v1.0</span></footer>
+  </main>
+  <dialog id="approval-modal" class="approval-modal" aria-labelledby="approval-title"><form method="dialog"><button class="icon-button modal-close" aria-label="Close approval dialog" value="cancel"><svg><use href="#i-close"/></svg></button></form><div class="modal-icon"><svg><use href="#i-shield"/></svg></div><p class="eyebrow">THE HUMAN CHECKPOINT</p><h2 id="approval-title">Review before you release.</h2><p id="approval-description">Approve creation of an evidence-linked review packet for this lot.</p><div id="approval-details" class="approval-details"></div><div class="approval-notice"><svg><use href="#i-alert"/></svg><p>This creates a local review packet only. It does not submit a bid or certify legal eligibility. A document change will invalidate this approval.</p></div><label class="approval-checkbox"><input type="checkbox" id="approval-checkbox"><span>I’ve reviewed the current checks and their source evidence.</span></label><p id="approval-error" class="approval-error" role="alert" hidden></p><div class="modal-actions"><button type="button" class="button button-outline" id="approval-cancel">Keep reviewing</button><button type="button" class="button button-primary" id="approval-confirm" disabled>Approve & build packet<svg><use href="#i-arrow"/></svg></button></div></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

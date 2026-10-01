@@ -1,0 +1,3 @@
+VmHWM:	 2931608 kB
+VmRSS:	 2931608 kB
+Cpus_allowed_list:	0-1
