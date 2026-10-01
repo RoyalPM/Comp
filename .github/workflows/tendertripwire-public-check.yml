@@ -1,0 +1,50 @@
+# Owner-approved anonymous verification of the already tested/pushed image.
+# No checkout, registry login, credentials, package-write permission or model inference.
+name: Verify anonymous TenderTripwire pull
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/tendertripwire-public-check.yml']
+
+permissions: {}
+
+concurrency:
+  group: tendertripwire-public-check
+  cancel-in-progress: false
+
+jobs:
+  anonymous-pull:
+    if: github.repository == 'RoyalPM/Comp' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      IMAGE: ghcr.io/royalpm/tendertripwire-bharat-agentic@sha256:06da9c58f0a42b6e635514af77a83505fb714412ed6b2547f4c9f9934a99664f
+    steps:
+      - name: Pull the exact digest with an empty Docker configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          EMPTY_CONFIG=$(mktemp -d "$RUNNER_TEMP/tendertripwire-anonymous.XXXXXX")
+          trap 'rm -rf -- "$EMPTY_CONFIG"' EXIT
+          test -z "$(find "$EMPTY_CONFIG" -mindepth 1 -print -quit)"
+          printf 'Pulling the pinned image anonymously with a new empty Docker config.\n'
+          env -u DOCKER_AUTH_CONFIG -u REGISTRY_AUTH_FILE \
+            DOCKER_CONFIG="$EMPTY_CONFIG" docker pull "$IMAGE"
+          docker image inspect "$IMAGE" > "$RUNNER_TEMP/tendertripwire-anonymous-image.json"
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          image = os.environ['IMAGE']
+          info = json.loads((Path(os.environ['RUNNER_TEMP']) / 'tendertripwire-anonymous-image.json').read_text())[0]
+          assert image in info['RepoDigests'], info['RepoDigests']
+          assert info['Os'] == 'linux' and info['Architecture'] == 'amd64'
+          print('ANONYMOUS_PULL_VERIFIED:', image)
+          print('IMAGE_ID:', info['Id'])
+          print('IMAGE_SIZE_BYTES:', info['Size'])
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write('### Anonymous pull verified\n\n')
+              summary.write(f'Exact image: `{image}`\n\n')
+              summary.write('GitHub\'s standard Ubuntu runner pulled this digest using a newly created empty Docker config. No registry login or credentials were supplied. Linux/amd64 and the returned registry digest were checked.\n\n')
+              summary.write('This verifies public download access only. The separate successful run 36827123779 supplies the constrained real-inference test evidence.\n')
+          PY
